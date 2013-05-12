@@ -1,0 +1,42 @@
+{
+    "name": "totoro-server",
+    "version": "0.1.6",
+    "description": "Server side of totoro.",
+    "homepage": "https://github.com/totorojs/totoro-server",
+    "keywords": [
+        "front-end",
+        "unit test",
+        "automation"
+    ],
+    "author": "kangpangpang <kangpangpang@gmail.com>",
+    "contributors": [
+        "fool2fish <fool2fish@gmail.com>"
+    ],
+    "engines": {
+        "node": ">= 0.8.17"
+    },
+    "dependencies": {
+        "commander": "~1.1.1",
+        "async": "~0.2.7",
+        "express": "~3.1.0",
+        "socket.io": "~0.9.14",
+        "socket.io-client": "~0.9.11",
+        "useragent":"~2.0.3",
+        "colorful": "~2.0.2",
+        "hogan.js": "~2.0.0",
+        "totoro-log": "~0.1.0",
+        "when": "~2.0.1"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-jshint": "~0.3.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:totorojs/totoro.git"
+    },
+    "bin": {
+        "totoro-server": "./bin/totoro-server"
+    },
+    "preferGlobal": true
+}
