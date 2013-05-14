@@ -74,7 +74,11 @@
                 Labor.prototype.addOrder = function(data) {
                     var self = this
                     var orderId = data.orderId
-                    var src = 'runner/' + data.orderId + '/' + data.runner
+                    var runner = data.runner
+                    if (runner.indexOf('/') !== 0) {
+                        runner = '/' + data.runner
+                    }
+                    var src = 'runner/' + data.orderId + runner
                     var element = document.createElement('iframe')
                     element.src = src
                     document.body.appendChild(element)

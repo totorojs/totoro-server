@@ -24,8 +24,10 @@
         "useragent":"~2.0.3",
         "colorful": "~2.0.2",
         "hogan.js": "~2.0.0",
-        "totoro-log": "~0.1.0",
-        "when": "~2.0.1"
+        "totoro-log": "~0.1.2",
+        "when": "~2.0.1",
+        "iconv-lite": "~0.2.8",
+        "request": "~2.21.0"
     },
     "devDependencies": {
         "grunt": "~0.4.1",
