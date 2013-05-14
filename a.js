@@ -53,4 +53,8 @@ var opt4 = { host: 'aralejs.org',
   console.info('res--->', res.statusCode, res.headers['content-length'])
 })
 
-req.end();
+//req.end();
+//
+request('http://aralejs.org/base/tests/runner.html', function(err, res, body) {
+  console.info('body-----11111->', body)
+})
