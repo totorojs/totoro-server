@@ -27,7 +27,8 @@
         "totoro-log": "~0.1.2",
         "when": "~2.0.1",
         "iconv-lite": "~0.2.8",
-        "request": "~2.21.0"
+        "request": "~2.21.0",
+        "semver": "~1.1.4"
     },
     "devDependencies": {
         "grunt": "~0.4.1",
