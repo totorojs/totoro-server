@@ -38,6 +38,7 @@ commander
     .option('--timeout [n]', 'client timeout')
     .option('--serverHost [s]', 'specify server host')
     .option('--serverPort [n]', 'specify server port')
+    .option('--insertScripts [s]', 'insert scripts to capture service', splitStr)
 
 
 commander.on('--help', function() {
