@@ -5,7 +5,7 @@ var commander = require('commander')
 var path = require('path')
 require('colorful').colorful()
 
-var Contractor = require('../lib/server/server')
+var Contractor = require('../lib/server')
 
 var pkgStr = fs.readFileSync(path.join(module.filename, '../../package.json'))
 var pkg = JSON.parse(pkgStr)
