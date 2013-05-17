@@ -44,8 +44,8 @@
                     socket.on('ping', function() {
                         clearInterval(self.timer)
                     })
-                    socket.on('accept', function(data) {
-                        self.accept(data)
+                    socket.on('add', function(data) {
+                        self.add(data)
                     })
                     socket.on('remove', function(orderId) {
                         self.remove(orderId)
@@ -69,7 +69,7 @@
                     }, 1000)
                 }
 
-                Labor.prototype.accept = function(data) {
+                Labor.prototype.add = function(data) {
                     var self = this
                     var orderId = data.orderId
                     var runner = data.runner
@@ -81,7 +81,7 @@
                     element.src = src
                     document.body.appendChild(element)
                     self.orders[orderId] = element
-                    console.log('accept order: ' + orderId)
+                    console.log('add order: ' + orderId)
                 }
 
                 Labor.prototype.remove = function(orderId) {
