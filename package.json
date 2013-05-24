@@ -36,6 +36,7 @@
         "type": "git",
         "url": "git@github.com:totorojs/totoro-server.git"
     },
+    "main":"./lib/server",
     "bin": {
         "totoro-server": "./bin/totoro-server"
     },
