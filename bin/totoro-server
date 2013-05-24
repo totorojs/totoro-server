@@ -46,7 +46,7 @@ new Contractor(getCfg(commander))
 
 
 function split(str) {
-    return str.split(',')
+    return str ? str.split(',') : []
 }
 
 function getCfg(commander) {
