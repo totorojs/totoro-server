@@ -23,6 +23,7 @@
         "useragent":"~2.0.3",
         "colorful": "~2.0.2",
         "totoro-log": "~0.1.2",
+        "totoro-common": "~0.1.0",
         "when": "~2.0.1",
         "iconv-lite": "~0.2.8",
         "request": "~2.21.0",

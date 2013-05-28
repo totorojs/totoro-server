@@ -5,6 +5,7 @@ var commander = require('commander')
 var path = require('path')
 var color = require('colorful')
 
+var common = require('totoro-common')
 var Server = require('../lib/server')
 
 
@@ -31,7 +32,7 @@ commander
     .option('--verbose', 'show debug log')
     .option('--serverHost [s]', 'specify server host')
     .option('--serverPort [n]', 'specify server port')
-    .option('--insertScripts [list]', 'insert scripts to capture service', split)
+    .option('--insertScripts [list]', 'insert scripts to capture service', common.split)
     .parse(process.argv)
 
 if (commander.rawArgs.length === 3 && (commander.rawArgs[2] === '-v' ||
@@ -42,21 +43,4 @@ if (commander.rawArgs.length === 3 && (commander.rawArgs[2] === '-v' ||
     process.exit(0)
 }
 
-new Server(getCfg(commander))
-
-
-function split(str) {
-    return str ? str.split(',') : []
-}
-
-function getCfg(commander) {
-    var cfg = {}
-    commander.options.forEach(function(item, index, list) {
-        var key = item.long.substring(2)
-        if(key in commander) {
-            cfg[key] = commander[key]
-        }
-    })
-    ;delete cfg.version
-    return cfg
-}
+new Server(common.getCfg(commander))
