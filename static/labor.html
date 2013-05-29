@@ -72,11 +72,8 @@
                 Labor.prototype.add = function(data) {
                     var self = this
                     var orderId = data.orderId
-                    var runner = data.runner
-                    if (runner.indexOf('/') !== 0) {
-                        runner = '/' + data.runner
-                    }
-                    var src = 'runner/' + data.orderId + runner
+                    var path = data.path
+                    var src = 'runner/' + data.orderId + path
                     var element = document.createElement('iframe')
                     element.src = src
                     document.body.appendChild(element)
@@ -87,7 +84,7 @@
                 Labor.prototype.remove = function(orderId) {
                     var self = this
                     var element = self.orders[orderId]
-                    
+
                     if (element){
                         delete self.orders[orderId]
                         /*
@@ -106,7 +103,7 @@
                         }, 0)
                         console.log('remove order: ' + orderId)
                     }
-                    
+
                 }
 
                 var labor = new Labor()
