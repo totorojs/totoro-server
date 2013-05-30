@@ -4,7 +4,7 @@
 
 totoro 的服务端。
 
-最新版本：v0.2.0 [Change Log](https://github.com/totorojs/totoro-server/wiki/change-log)
+最新版本：v0.2.0 
 
 ---
 
