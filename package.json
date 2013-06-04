@@ -13,25 +13,25 @@
         "fool2fish <fool2fish@gmail.com>"
     ],
     "engines": {
-        "node": ">= 0.8.17"
+        "node": "0.8.17 - 0.10.7"
     },
     "dependencies": {
-        "commander": "~1.1.1",
-        "async": "~0.2.7",
-        "express": "~3.1.0",
-        "socket.io": "~0.9.14",
-        "useragent":"~2.0.3",
-        "colorful": "~2.0.2",
-        "totoro-log": "~0.1.2",
-        "totoro-common": "~0.1.0",
-        "when": "~2.0.1",
-        "iconv-lite": "~0.2.8",
-        "request": "~2.21.0",
-        "semver": "~1.1.4"
+        "commander": "1.1.1",
+        "async": "0.2.7",
+        "express": "3.1.0",
+        "socket.io": "0.9.14",
+        "useragent":"2.0.3",
+        "colorful": "2.0.2",
+        "totoro-log": "0.1.2",
+        "totoro-common": "0.1.0",
+        "when": "2.0.1",
+        "iconv-lite": "0.2.8",
+        "request": "2.21.0",
+        "semver": "1.1.4"
     },
     "devDependencies": {
-        "grunt": "~0.4.1",
-        "grunt-contrib-jshint": "~0.3.0"
+        "grunt": "0.4.1",
+        "grunt-contrib-jshint": "0.3.0"
     },
     "repository": {
         "type": "git",
