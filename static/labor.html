@@ -41,15 +41,24 @@
                             ua: navigator.userAgent
                         })
                     })
+
                     socket.on('ping', function() {
                         clearInterval(self.timer)
                     })
+
                     socket.on('add', function(data) {
                         self.add(data)
                     })
+
                     socket.on('remove', function(orderId) {
                         self.remove(orderId)
                     })
+
+                    socket.on('reload', function() {
+                        console.log('reload')
+                        window.location.reload()
+                    })
+
                     socket.on('disconnect', function() {
                         console.log('disconnected')
                         for (var i in self.orders) {
