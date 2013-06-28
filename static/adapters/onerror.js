@@ -5,10 +5,12 @@
         report({
             orderId: id,
             action: 'end',
-            error: {
-                message: message,
-                url: url,
-                line: line
+            info: {
+                error: {
+                    message: message,
+                    url: url,
+                    line: line
+                }
             }
         })
         return true
