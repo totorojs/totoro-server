@@ -1,6 +1,6 @@
 {
     "name": "totoro-server",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "description": "Server side of totoro.",
     "homepage": "https://github.com/totorojs/totoro-server",
     "keywords": [
@@ -27,7 +27,8 @@
         "when": "2.0.1",
         "iconv-lite": "0.2.8",
         "request": "2.21.0",
-        "semver": "1.1.4"
+        "semver": "1.1.4",
+        "jscoverage": "0.3.7"
     },
     "devDependencies": {
         "grunt": "0.4.1",
