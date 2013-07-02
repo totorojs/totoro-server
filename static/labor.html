@@ -121,7 +121,9 @@
                         var orderId = data.orderId
                         var orderEl = labor.orders[orderId].contentWindow
                         if(orderEl._$jscoverage) {
-                            data.info.coverage = map(orderEl._$jscoverage)
+                            var cov = map(orderEl._$jscoverage)
+                            ;delete cov.files
+                            data.info.coverage = cov
                         }
                     }
                     labor.reports.push(data)
