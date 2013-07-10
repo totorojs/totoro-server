@@ -55,11 +55,13 @@ function launchServer(){
         console.time('socket')
 
         datas.forEach(function(data) {
+            console.time(data)
             socket.emit('getInfo', data)
         })
 
         socket.on('proxyData', function(info) {
             console.info('----->proxyData', info.body.length, info.path)
+            console.timeEnd(info.path)
             i--
             if (i === 0) {
                 console.timeEnd('socket')
