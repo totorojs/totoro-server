@@ -1,9 +1,11 @@
 'use strict';
 
 var http = require('http')
+var net = require('net')
 var express = require('express')
 var path = require('path')
 var common = require('totoro-common')
+var jsonOverTCP = require('json-over-tcp')
 var logger = common.logger
 
 var cfg = {
@@ -39,6 +41,13 @@ function launchServer(){
                     j--
                     if (j === 0) {
                         console.timeEnd('http')
+                        if (tcpSocket) {
+                            tcpSocket.emit('begin')
+                        } else {
+                            setTimeout(function() {
+                                tcpSocket.emit('begin')
+                            }, 5000)
+                        }
                     }
                 })
             })
@@ -75,6 +84,32 @@ console.timeEnd('socket:' + info.path)
             }
         })
     })
+
+    var tcpSocket
+    io.of('/tcp').on('connection', function(socket) {
+        socket.on('begin', function(info) {
+            console.info('begin tcp request test', info.hostname, info.port)
+            var j = datas.length
+            console.time('tcp')
+            // Start a connection to the server
+            var j_socket = jsonOverTCP.connect(info.port, info.hostname, function(){
+                datas.forEach(function(p) {
+console.time('tcp:' + p)
+                    j_socket.write({path: p})
+                })
+            })
+
+             j_socket.on('data', function(info) {
+console.timeEnd('tcp:' + info.path)
+                j--
+                if (j === 0) {
+                    console.timeEnd('tcp')
+                }
+            })
+        })
+
+        tcpSocket = socket
+    });
 }
 
 function request(hostname, port, p, cb) {
@@ -99,6 +134,10 @@ console.timeEnd('request:' + opts.path)
             cb()
         })
     }).end()
+}
+
+function netRequest(hostname, port, p, cb) {
+
 }
 
 launchServer()
