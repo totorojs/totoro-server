@@ -95,7 +95,7 @@ console.time('request' + p)
         })
 
         res.on('end', function() {
-console.time('request' + opts.path)
+console.timeEnd('request' + opts.path)
             cb()
         })
     }).end()
