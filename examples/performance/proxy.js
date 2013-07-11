@@ -55,13 +55,12 @@ function launchServer(){
         console.time('socket')
 
         datas.forEach(function(data) {
-            console.time(data)
+console.time('socket' + data)
             socket.emit('getInfo', data)
         })
 
         socket.on('proxyData', function(info) {
-            console.info('----->proxyData', info.body.length, info.path)
-            console.timeEnd(info.path)
+console.timeEnd('socket' + info.path)
             i--
             if (i === 0) {
                 console.timeEnd('socket')
@@ -85,7 +84,7 @@ function request(hostname, port, p, cb) {
         port: port,
         path: p
     }
-
+console.time('request' + p)
     http.request(opts, function(res) {
         var buffer = new Buffer(parseInt(res.headers['content-length'], 10))
         var offset = 0
@@ -96,7 +95,7 @@ function request(hostname, port, p, cb) {
         })
 
         res.on('end', function() {
-            console.info('----->httpRequest', buffer.length, opts.path)
+console.time('request' + opts.path)
             cb()
         })
     }).end()
