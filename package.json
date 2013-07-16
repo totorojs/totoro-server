@@ -27,7 +27,6 @@
         "when": "2.0.1",
         "iconv-lite": "0.2.8",
         "request": "2.21.0",
-        "semver": "1.1.4",
         "jscoverage": "0.3.7"
     },
     "devDependencies": {
