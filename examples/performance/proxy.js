@@ -7,6 +7,7 @@ var path = require('path')
 var common = require('totoro-common')
 var jsonOverTCP = require('json-over-tcp')
 var logger = common.logger
+var net = require('net')
 
 var cfg = {
     serverHost: common.getExternalIpAddress(),
@@ -104,12 +105,56 @@ console.timeEnd('tcp:' + info.path)
                 j--
                 if (j === 0) {
                     console.timeEnd('tcp')
+
+                    if (netSocket) {
+                        netSocket.emit('begin')
+                    } else {
+                        setTimeout(function() {
+                            netSocket.emit('begin')
+                        }, 20 * 1000)
+                    }
+
                 }
             })
         })
 
         tcpSocket = socket
-    });
+    })
+
+    var netSocket
+
+    io.of('/net').on('connection', function(socket) {
+        console.info('net begin-----')
+        socket.on('begin', function(info) {
+            console.info('begin net request test', info.hostname, info.port)
+            var j = datas.length
+            console.time('net')
+            // Start a connection to the server
+            console.info('------->', info)
+            var netClient = net.connect(info.port, info.hostname, function(){
+                console.info('coonect net ------')
+                datas.forEach(function(p) {
+//console.time('net:' + p)
+console.info('n---------->', p)
+                    netClient.write(p + '\r\n')
+                })
+            })
+
+             netClient.on('data', function(info) {
+//console.timeEnd('net:' + info.path)
+console.info('net:---->', info.length)
+                j--
+                if (j === 0) {
+                    console.timeEnd('net')
+                }
+            })
+        })
+
+        netSocket = socket
+    })
+
+
+
 }
 
 function request(hostname, port, p, cb) {
