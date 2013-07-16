@@ -83,7 +83,6 @@
                     var src = 'runner/' + data.orderId + path
                     var element = document.createElement('iframe')
                     element.src = src
-                    element.id = orderId // TODO why ies need this?
                     document.body.appendChild(element)
                     this.orders[orderId] = element
                     console.log('add order: ' + orderId)
