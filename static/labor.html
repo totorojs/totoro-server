@@ -25,16 +25,15 @@
                 }
 
                 function Labor() {
-                    var self = this
-                    self.orders = {}
-                    self.reports = []
-                    self.timer = undefined
-                    self.init()
+                    this.orders = {}
+                    this.reports = []
+                    this.timer = undefined
+                    this.init()
                 }
 
                 Labor.prototype.init = function() {
-                    var self = this
-                    var socket = self.socket = io.connect('/labor')
+                    var that = this
+                    var socket = this.socket = io.connect('/labor')
                     socket.on('connect', function() {
                         console.log('connected')
                         socket.emit('init', {
@@ -43,15 +42,15 @@
                     })
 
                     socket.on('ping', function() {
-                        clearInterval(self.timer)
+                        clearInterval(that.timer)
                     })
 
                     socket.on('add', function(data) {
-                        self.add(data)
+                        that.add(data)
                     })
 
                     socket.on('remove', function(orderId) {
-                        self.remove(orderId)
+                        that.remove(orderId)
                     })
 
                     socket.on('reload', function() {
@@ -61,25 +60,24 @@
 
                     socket.on('disconnect', function() {
                         console.log('disconnected')
-                        for (var i in self.orders) {
-                            self.remove(i)
+                        for (var i in that.orders) {
+                            that.remove(i)
                         }
-                        self.timer = setInterval(function() {
-                            self.socket.emit('ping')
+                        that.timer = setInterval(function() {
+                            that.socket.emit('ping')
                         }, 950)
                     })
 
                     setInterval(function() {
-                        if (self.reports.length) {
-                            var data = self.reports
-                            self.reports = []
-                            self.socket.emit('report', data)
+                        if (that.reports.length) {
+                            var data = that.reports
+                            that.reports = []
+                            that.socket.emit('report', data)
                         }
                     }, 1000)
                 }
 
                 Labor.prototype.add = function(data) {
-                    var self = this
                     var orderId = data.orderId
                     var path = data.path
                     var src = 'runner/' + data.orderId + path
@@ -87,16 +85,15 @@
                     element.src = src
                     element.id = orderId // TODO why ies need this?
                     document.body.appendChild(element)
-                    self.orders[orderId] = element
+                    this.orders[orderId] = element
                     console.log('add order: ' + orderId)
                 }
 
                 Labor.prototype.remove = function(orderId) {
-                    var self = this
-                    var element = self.orders[orderId]
+                    var element = this.orders[orderId]
 
                     if (element){
-                        delete self.orders[orderId]
+                        delete this.orders[orderId]
                         /*
                          * NOTE:
                          *
