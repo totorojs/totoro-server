@@ -121,6 +121,7 @@
                             var cov = map(orderEl._$jscoverage)
                             ;delete cov.files
                             data.info.coverage = cov
+                            console.log(cov)
                         }
                     }
                     labor.reports.push(data)
@@ -131,6 +132,10 @@
                     }
                 }
 
+
+                // the following code base on
+                // https://github.com/visionmedia/mocha/blob/master/lib/reporters/json-cov.js
+
                 /**
                  * Map jscoverage data to a JSON structure
                  * suitable for reporting.
@@ -139,33 +144,32 @@
                  * @return {Object}
                  * @api private
                  */
-
                 function map(cov) {
-                  var ret = {
-                      sloc: 0
-                    , hits: 0
-                    , misses: 0
-                    , coverage: 0
-                    , files: []
-                  };
+                    var ret = {
+                        sloc: 0,
+                        hits: 0,
+                        misses: 0,
+                        coverage: 0,
+                        files: []
+                    }
 
-                  for (var filename in cov) {
-                    var data = coverage(filename, cov[filename]);
-                    ret.files.push(data);
-                    ret.hits += data.hits;
-                    ret.misses += data.misses;
-                    ret.sloc += data.sloc;
-                  }
+                    for (var filename in cov) {
+                        var data = coverage(filename, cov[filename])
+                        ret.files.push(data)
+                        ret.hits += data.hits
+                        ret.misses += data.misses
+                        ret.sloc += data.sloc
+                    }
 
-                  ret.files.sort(function(a, b) {
-                    return a.filename.localeCompare(b.filename);
-                  });
+                    ret.files.sort(function(a, b) {
+                        return a.filename.localeCompare(b.filename)
+                    });
 
-                  if (ret.sloc > 0) {
-                    ret.coverage = (ret.hits / ret.sloc) * 100;
-                  }
+                    if (ret.sloc > 0) {
+                        ret.coverage = (ret.hits / ret.sloc) * 100
+                    }
 
-                  return ret;
+                    return ret
                 };
 
                 /**
@@ -177,42 +181,39 @@
                  * @return {Object}
                  * @api private
                  */
-
                 function coverage(filename, data) {
-                  var ret = {
-                    filename: filename,
-                    coverage: 0,
-                    hits: 0,
-                    misses: 0,
-                    sloc: 0,
-                    source: {}
-                  };
+                    var ret = {
+                        filename: filename,
+                        coverage: 0,
+                        hits: 0,
+                        misses: 0,
+                        sloc: 0,
+                        source: {}
+                    };
 
-                  for(var i = 0; i < data.source.length; i++){
-                      var num = i
-                      var line = data.source[i]
+                    for (var i = 0; i < data.source.length; i++) {
+                        var num = i
+                        var line = data.source[i]
 
-                      num++;
+                        num++
 
-                    if (data[num] === 0) {
-                      ret.misses++;
-                      ret.sloc++;
-                    } else if (data[num] !== undefined) {
-                      ret.hits++;
-                      ret.sloc++;
+                        if (data[num] === 0) {
+                            ret.misses++
+                            ret.sloc++
+                        } else if (data[num] !== undefined) {
+                            ret.hits++
+                            ret.sloc++
+                        }
+
+                        ret.source[num] = {
+                            source: line,
+                            coverage: data[num] === undefined ? '' : data[num]
+                        };
                     }
 
-                    ret.source[num] = {
-                        source: line
-                      , coverage: data[num] === undefined
-                        ? ''
-                        : data[num]
-                    };
-                  }
+                    ret.coverage = ret.hits / ret.sloc * 100
 
-                  ret.coverage = ret.hits / ret.sloc * 100;
-
-                  return ret;
+                    return ret
                 }
 
                 /**
@@ -223,15 +224,13 @@
                  * @return {Object}
                  * @api private
                  */
-
                 function clean(test) {
-                  return {
-                      title: test.title
-                    , fullTitle: test.fullTitle()
-                    , duration: test.duration
-                  }
+                    return {
+                        title: test.title,
+                        fullTitle: test.fullTitle(),
+                        duration: test.duration
+                    }
                 }
-
 
             })()
         </script>
