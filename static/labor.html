@@ -79,13 +79,13 @@
 
                 Labor.prototype.add = function(data) {
                     var orderId = data.orderId
-                    var path = data.path
+                    var path = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
                     var src = 'runner/' + data.orderId + path
                     var element = document.createElement('iframe')
                     element.src = src
                     document.body.appendChild(element)
                     this.orders[orderId] = element
-                    console.log('add order: ' + orderId)
+                    console.log('add order: ' + src)
                 }
 
                 Labor.prototype.remove = function(orderId) {
