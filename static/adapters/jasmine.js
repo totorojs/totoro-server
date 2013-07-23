@@ -10,9 +10,9 @@
 
     function sendMessage(action, info) {
         report({
-            orderId: id,
-            action: action,
-            info: info
+            orderId : id,
+            action : action,
+            info : info
         })
     }
 
@@ -54,10 +54,10 @@
             }
 
             var data = {
-                parent: suiteName,
-                title: spec.description,
-                duration: results.skipped ? 0 : timeElapsed,
-                message: ''
+                parent : suiteName,
+                title : spec.description,
+                duration : results.skipped ? 0 : timeElapsed,
+                message : ''
             }
 
             var action = 'pass'
