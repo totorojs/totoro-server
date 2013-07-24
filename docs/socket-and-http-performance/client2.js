@@ -58,7 +58,7 @@ app.listen(cfg.clientPort, cfg.clientHost, function() {
     server.listen(9997);
 
     server.on('connection', function(socket) {
-        console.info('coonect000')
+        console.info('connect000')
         socket.on('data', function(data) {
             //console.info('data------>', data)
 

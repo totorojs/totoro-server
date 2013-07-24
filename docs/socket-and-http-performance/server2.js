@@ -27,18 +27,19 @@ function launchServer(){
     })
 
     var clientCfg = {}
-    var datas = ['a.txt', 'b.txt', 'c.txt', 'd.txt', 'e.txt', '163.html', 'sina.html', 'sohu.html', 'taobao.html', 'alipay.html']
+    var datas = ['a.txt', 'b.txt', 'c.txt', 'd.txt', 'e.txt',
+            '163.html', 'sina.html', 'sohu.html', 'taobao.html', 'alipay.html']
 
     var httpSocket
 
     io.of('/http').on('connection', function(socket) {
         socket.on('begin', function(info) {
             console.info('begin http request test')
-            var j = datas.length
+    var j = datas.length
             console.time('http')
 
             datas.forEach(function(p) {
-                request(info.hostname, info.port, '/datas/' + p, function() {
+                request(info.hostname, info.port, '/' + p, function() {
                     j--
                     if (j === 0) {
                         console.timeEnd('http')
@@ -164,7 +165,8 @@ function request(hostname, port, p, cb) {
         port: port,
         path: p
     }
-console.time('request:' + p)
+    console.time('request:' + p)
+
     http.request(opts, function(res) {
         var buffer = new Buffer(parseInt(res.headers['content-length'], 10))
         var offset = 0
@@ -175,7 +177,7 @@ console.time('request:' + p)
         })
 
         res.on('end', function() {
-console.timeEnd('request:' + opts.path)
+    console.timeEnd('request:' + opts.path)
             cb()
         })
     }).end()
@@ -186,3 +188,4 @@ function netRequest(hostname, port, p, cb) {
 }
 
 launchServer()
+
