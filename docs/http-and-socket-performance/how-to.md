@@ -22,8 +22,7 @@ On the same computer:
 $ node server.js
 $ node client.js
 ```
-
-Not on the same computer:
+On the different computer:
 
 ```
 $ node server.js

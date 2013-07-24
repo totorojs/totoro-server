@@ -91,7 +91,7 @@ function cb(file, socket){
         var rule = rules[pos]
         rule = rule.join(':')
         console.timeEnd(rule)
-        console.log('== ' + rule.toUpperCase() + ' END ==\n')
+        console.log('== ' + rule.toUpperCase() + ' END ==')
 
         var len = rules.length
         if (pos < len - 1) {
