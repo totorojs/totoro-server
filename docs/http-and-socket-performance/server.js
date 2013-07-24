@@ -12,10 +12,22 @@ var common = require('totoro-common')
 
 var host = common.getExternalIpAddress()
 var port = 9997
-var files = ['a.txt', 'b.txt', 'c.txt', 'd.txt', 'e.txt',
-            '163.html', 'sina.html', 'sohu.html', 'taobao.html', 'alipay.html']
-var files = ['simple.html']
-//var files = ['taobao.html']
+var client
+
+var rules = [
+    /*['file size', 'concurrency', 'proxy type']*/
+    ['small', 'low', 'http'],
+    ['small', 'low', 'socket.io'],
+    ['large', 'low', 'http'],
+    ['large', 'low', 'socket.io'],
+    ['small', 'high', 'http'],
+    ['small', 'high', 'socket.io'],
+    ['large', 'high', 'http'],
+    ['large', 'high', 'socket.io'],
+]
+var pos = 0 // current rule position
+var amount // concurrency counter
+
 
 var app = express()
 var server = require('http').createServer(app)
@@ -28,61 +40,41 @@ server.listen(port, host, function(socket) {
 })
 
 io.sockets.on('connection', function (socket) {
-    socket.emit('start', 'http')
     socket.on('start', function(data){
-        proxyReq(data, socket)
+        client = data
+        proxyReq(socket)
+    })
+
+    socket.on('proxyRes', function(data) {
+        cb(data.path, socket)
     })
 })
 
 
-function proxyReq(data, socket) {
-    var type = data.type
-    var host = data.host
-    var port = data.port
-    var i = files.length
+function proxyReq(socket) {
+    var host = client.host
+    var port = client.port
 
-    console.log('\n== ' + type.toUpperCase() + ' START ==')
-    console.time(type)
+    var rule = rules[pos]
+    var size = rule[0]
+    var concurrency = rule[1]
+    var type = rule[2]
 
-    if(type === 'socket.io') {
-        socket.on('proxyRes', function(data) {
-            i--
-            var label = type + ': ' + data.path
-            cb(label, i, 'socket.io', null, socket)
-        })
-    }
+    var files = getFiles(size, concurrency)
+    amount = files.length
+    rule = rule.join(':')
+
+    console.log('\n== ' + rule.toUpperCase() + ' START ==')
+    console.time(rule)
 
     files.forEach(function(file) {
-        var label = type + ': ' + file
-        console.time(label)
+        console.time(file)
 
         if (type === 'http') {
-            http.request({
-                hostname : host,
-                port : port,
-                path : '/' + file,
-            },
-            function (res) {
-                var buffer = new Buffer(parseInt(res.headers['content-length'], 10))
-                var offset = 0
-
-                res.on('data', function(data) {
-                    data.copy(buffer, offset)
-                    offset += data.length
-                })
-
-                res.on('end', function() {
-                    i--
-                    cb(label, i, 'http', 'request', socket)
-                })
-            }).end()
-
-        } else if (type === 'request') {
             request(
                 'http://' + host + ':' + port + '/' + file,
                 function(err, res, body) {
-                    i--
-                    cb(label, i, 'request', 'socket.io', socket)
+                    cb(file, socket)
                 }
             )
 
@@ -92,16 +84,59 @@ function proxyReq(data, socket) {
     })
 }
 
-function cb(label, i, curType, nextType, socket){
-    console.timeEnd(label)
-    if (i === 0) {
-        console.timeEnd(curType)
-        console.log('== ' + curType.toUpperCase() + ' END ==\n')
+function cb(file, socket){
+    console.timeEnd(file)
+    amount--
+    if (amount === 0) {
+        var rule = rules[pos]
+        rule = rule.join(':')
+        console.timeEnd(rule)
+        console.log('== ' + rule.toUpperCase() + ' END ==\n')
 
-        if (nextType) {
-            socket.emit('start', nextType)
+        var len = rules.length
+        if (pos < len - 1) {
+            pos++
+            proxyReq(socket)
         } else {
             process.exit(0)
+        }
+    }
+}
+
+function getFiles(size, concurrency) {
+    if (size === 'small') {
+        if (concurrency === 'low') {
+            return ['simple.html']
+        } else {
+            return [
+                'simple.html',
+                'simple1.html',
+                'simple2.html',
+                'simple3.html',
+                'simple4.html',
+                'simple.js',
+                'simple1.js',
+                'simple2.js',
+                'simple3.js',
+                'simple4.js',
+            ]
+        }
+    } else {
+        if (concurrency === 'low') {
+            return ['taobao.html']
+        } else {
+            return [
+                'taobao.html',
+                'tmall.html',
+                'etao.html',
+                'amazon.html',
+                'jquery-2.0.3.js',
+                'sea-debug.js',
+                'backbone.js',
+                'taobao.txt',
+                'tmall.txt',
+                'etao.txt'
+            ]
         }
     }
 }

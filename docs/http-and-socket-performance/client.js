@@ -22,40 +22,14 @@ app.listen(port, host, function() {
     console.info('Start client server: ' + host + ':' + port)
     var socket = io.connect('http://' + capture)
 
-    socket.on('start', function(type) {
+    socket.on('connect', function() {
         socket.emit('start', {
             host : host,
-            port : port,
-            type : type
+            port : port
         })
     })
 
     socket.on('proxyReq', function(file) {
-        /*
-        http.request({
-            hostname : host,
-            port : port,
-            path : '/' + file,
-        },
-        function (res) {
-            var buffer = new Buffer(parseInt(res.headers['content-length'], 10))
-            var offset = 0
-
-            res.on('data', function(data) {
-                data.copy(buffer, offset)
-                offset += data.length
-            })
-
-            res.on('end', function() {
-                socket.emit('proxyRes', {
-                    path : file,
-                    statusCode : res.statusCode,
-                    header : res.header,
-                    body : buffer
-                })
-            })
-        }).end()*/
-
         request(
             'http://' + host + ':' + port + '/' + file,
             function (err, res, body) {

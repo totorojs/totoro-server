@@ -19,7 +19,7 @@ var cfg = {
     serverPort: 9996
 }
 
-app.use(express.static(process.cwd()))
+app.use(express.static('static'))
 app.listen(cfg.clientPort, cfg.clientHost, function() {
     console.info('start client server: ' + cfg.clientHost + ':' + cfg.clientPort)
     var socket = io.connect(
@@ -105,7 +105,7 @@ function getInfo(cfg, p, cb) {
     var opts = {
         hostname: cfg.clientHost,
         port: cfg.clientPort,
-        path: '/datas/' + p,
+        path: '/' + p,
         method: 'GET'
     }
     http.request(opts, function(res) {

@@ -27,8 +27,18 @@ function launchServer(){
     })
 
     var clientCfg = {}
-    var datas = ['a.txt', 'b.txt', 'c.txt', 'd.txt', 'e.txt',
-            '163.html', 'sina.html', 'sohu.html', 'taobao.html', 'alipay.html']
+    var datas = [
+        'taobao.html',
+        'tmall.html',
+        'etao.html',
+        'amazon.html',
+        'jquery-2.0.3.js',
+        'sea-debug.js',
+        'backbone.js',
+        'taobao.txt',
+        'tmall.txt',
+        'etao.txt'
+    ]
 
     var httpSocket
 
