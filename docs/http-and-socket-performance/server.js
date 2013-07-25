@@ -13,6 +13,7 @@ var common = require('totoro-common')
 var host = common.getExternalIpAddress()
 var port = 9997
 var client
+var iSocket // stable socket
 
 var rules = [
     /*['file size', 'concurrency', 'proxy type']*/
@@ -24,6 +25,8 @@ var rules = [
     ['small', 'high', 'socket.io'],
     ['large', 'high', 'http'],
     ['large', 'high', 'socket.io'],
+    ['small', 'high', 'multiple socket.io'],
+    ['large', 'high', 'multiple socket.io']
 ]
 var pos = 0 // current rule position
 var amount // concurrency counter
@@ -35,23 +38,41 @@ var io = socketio.listen(server, {
     log : false
 })
 
-server.listen(port, host, function(socket) {
+server.listen(port, host, function() {
     console.log('Start server: ' + host + ':' + port)
 })
 
-io.sockets.on('connection', function (socket) {
-    socket.on('start', function(data){
+io.sockets.on('connection', function(socket) {
+    socket.on('message', function(data) {
+        console.log('---msg----')
+    })
+})
+
+io.of('/stable').on('connection', function(socket) {
+    iSocket = socket
+
+    socket.on('start', function(data) {
         client = data
-        proxyReq(socket)
+        proxyReq()
     })
 
     socket.on('proxyRes', function(data) {
-        cb(data.path, socket)
+        console.timeEnd(data.path)
+        cb()
+    })
+})
+
+io.of('/temp').on('connection', function(socket) {
+    socket.on('proxyRes', function(data) {
+        socket.disconnect()
+        console.log('temp socket:', socket.id, 'get proxy response')
+        console.timeEnd(data.path)
+        cb()
     })
 })
 
 
-function proxyReq(socket) {
+function proxyReq() {
     var host = client.host
     var port = client.port
 
@@ -60,32 +81,35 @@ function proxyReq(socket) {
     var concurrency = rule[1]
     var type = rule[2]
 
-    var files = getFiles(size, concurrency)
-    amount = files.length
-    rule = rule.join(':')
+    var paths = getPaths(size, concurrency)
+    amount = paths.length
 
+    rule = rule.join(':')
     console.log('\n== ' + rule.toUpperCase() + ' START ==')
     console.time(rule)
 
-    files.forEach(function(file) {
-        console.time(file)
+    paths.forEach(function(path) {
+        console.time(path)
 
         if (type === 'http') {
             request(
-                'http://' + host + ':' + port + '/' + file,
+                'http://' + host + ':' + port + '/' + path,
                 function(err, res, body) {
-                    cb(file, socket)
+                    console.timeEnd(path)
+                    cb()
                 }
             )
 
-        } else if (type === 'socket.io') {
-            socket.emit('proxyReq', file)
+        } else {
+            iSocket.emit('proxyReq', {
+                path : path,
+                type : type
+            })
         }
     })
 }
 
-function cb(file, socket){
-    console.timeEnd(file)
+function cb(){
     amount--
     if (amount === 0) {
         var rule = rules[pos]
@@ -96,14 +120,14 @@ function cb(file, socket){
         var len = rules.length
         if (pos < len - 1) {
             pos++
-            proxyReq(socket)
+            proxyReq()
         } else {
             process.exit(0)
         }
     }
 }
 
-function getFiles(size, concurrency) {
+function getPaths(size, concurrency) {
     if (size === 'small') {
         if (concurrency === 'low') {
             return ['simple.html']
@@ -118,7 +142,7 @@ function getFiles(size, concurrency) {
                 'simple1.js',
                 'simple2.js',
                 'simple3.js',
-                'simple4.js',
+                'simple4.js'
             ]
         }
     } else {
