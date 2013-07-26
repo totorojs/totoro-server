@@ -28,7 +28,8 @@
         "iconv-lite": "0.2.8",
         "request": "2.21.0",
         "jscoverage": "0.3.7",
-        "mongoose": "~3.6.15"
+        "mongoose": "~3.6.15",
+        "dateformat": "*"
     },
     "devDependencies": {
         "grunt": "0.4.1",
