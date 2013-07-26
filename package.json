@@ -27,7 +27,8 @@
         "when": "2.0.1",
         "iconv-lite": "0.2.8",
         "request": "2.21.0",
-        "jscoverage": "0.3.7"
+        "jscoverage": "0.3.7",
+        "mongoose": "~3.6.15"
     },
     "devDependencies": {
         "grunt": "0.4.1",
