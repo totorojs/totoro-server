@@ -1,7 +1,7 @@
 (function() {
     if ( typeof console === 'undefined') {
         console = {
-            log : function() {
+            log: function() {
             }
         }
     }
@@ -21,7 +21,7 @@
         socket.on('connect', function() {
             console.log('connected')
             socket.emit('init', {
-                ua : navigator.userAgent
+                ua: navigator.userAgent
             })
         })
 
@@ -135,11 +135,11 @@
      */
     function map(cov) {
         var ret = {
-            sloc : 0,
-            hits : 0,
-            misses : 0,
-            coverage : 0,
-            files : []
+            sloc: 0,
+            hits: 0,
+            misses: 0,
+            coverage: 0,
+            files: []
         }
 
         for (var filename in cov) {
@@ -172,12 +172,12 @@
      */
     function coverage(filename, data) {
         var ret = {
-            filename : filename,
-            coverage : 0,
-            hits : 0,
-            misses : 0,
-            sloc : 0,
-            source : {}
+            filename: filename,
+            coverage: 0,
+            hits: 0,
+            misses: 0,
+            sloc: 0,
+            source: {}
         };
 
         for (var i = 0; i < data.source.length; i++) {
@@ -195,8 +195,8 @@
             }
 
             ret.source[num] = {
-                source : line,
-                coverage : data[num] === undefined ? '' : data[num]
+                source: line,
+                coverage: data[num] === undefined ? '' : data[num]
             }
         }
 
@@ -215,9 +215,9 @@
      */
     function clean(test) {
         return {
-            title : test.title,
-            fullTitle : test.fullTitle(),
-            duration : test.duration
+            title: test.title,
+            fullTitle: test.fullTitle(),
+            duration: test.duration
         }
     }
 
