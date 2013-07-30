@@ -33,7 +33,12 @@
     },
     "devDependencies": {
         "grunt": "0.4.1",
-        "grunt-contrib-jshint": "0.3.0"
+        "grunt-shell": "~0.2.2",
+        "grunt-mocha-test": "~0.6.2",
+        "grunt-contrib-jshint": "0.3.0",
+        "mocha": "*",
+        "expect.js": "*",
+        "sinon": "*"
     },
     "repository": {
         "type": "git",

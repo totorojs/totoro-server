@@ -1,14 +1,31 @@
 /*
- * grunt-cmd-transport
- * https://github.com/spmjs/grunt-cmd-transport
+ * totoro-server
+ * https://github.com/totorojs/totoro-server
  *
- * Copyright (c) 2013 Hsiaoming Yang
+ * Copyright (c) 2013 kangpangpang, fool2fish
  * Licensed under the MIT license.
  */
 
 'use strict';
 
+var path = require('path')
+var shell = require('shelljs');
+
 module.exports = function(grunt) {
+
+  // These plugins provide necessary tasks.
+  grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+
+  if (!grunt.file.exists(path.resolve('node_modules', 'totoro'))) {
+      shell.exec('npm install totoro');
+  }
+
+  if (!grunt.file.exists(path.resolve('node_modules', 'browsers'))) {
+      shell.exec('npm install browsers');
+  }
+
 
   // Project configuration.
   grunt.initConfig({
@@ -20,13 +37,20 @@ module.exports = function(grunt) {
       options: {
           'jshintrc': '.jshintrc'
       }
-    }
+    },
 
+    mochaTest: {
+      all: {
+        options: {
+            reporter: 'spec',
+            // tests are quite slow as thy spawn node processes
+            timeout: 10000
+        },
+        src: ['tests/*.js']
+      }
+    }
   });
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   grunt.registerTask('default', ['jshint']);
-
 };
