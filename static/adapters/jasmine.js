@@ -10,9 +10,9 @@
 
     function sendMessage(action, info) {
         report({
-            orderId : id,
-            action : action,
-            info : info
+            orderId: id,
+            action: action,
+            info: info
         })
     }
 
@@ -20,11 +20,11 @@
 
     function createTotoroReporter(){
         var stats = {
-            suites : 0,
-            tests : 0,
-            passes : 0,
-            pending : 0,
-            failures : 0
+            suites: 0,
+            tests: 0,
+            passes: 0,
+            pending: 0,
+            failures: 0
         }
 
         var reporter = {}
@@ -54,10 +54,10 @@
             }
 
             var data = {
-                parent : suiteName,
-                title : spec.description,
-                duration : results.skipped ? 0 : timeElapsed,
-                message : ''
+                parent: suiteName,
+                title: spec.description,
+                duration: results.skipped ? 0 : timeElapsed,
+                message: ''
             }
 
             var action = 'pass'

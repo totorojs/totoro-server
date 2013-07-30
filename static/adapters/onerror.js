@@ -3,13 +3,13 @@
     var id = location.href.match(/runner\/([^/]+)\//)[1]
     window.onerror = function(message, url, line){
         report({
-            orderId : id,
-            action : 'end',
-            info : {
-                error : {
-                    message : message,
-                    url : url,
-                    line : line
+            orderId: id,
+            action: 'end',
+            info: {
+                error: {
+                    message: message,
+                    url: url,
+                    line: line
                 }
             }
         })

@@ -3,11 +3,11 @@
         var report = top.report
         var id = location.href.match(/runner\/([^/]+)\//)[1]
         var stats = {
-            suites : 0,
-            tests : 0,
-            passes : 0,
-            pending : 0,
-            failures : 0
+            suites: 0,
+            tests: 0,
+            passes: 0,
+            pending: 0,
+            failures: 0
         }
         var start
 
@@ -25,13 +25,13 @@
             var medium = test.slow() / 2
             var speed = duration > test.slow() ? 'slow' : duration > medium ? 'medium' : 'fast'
             report({
-                orderId : id,
-                action : 'pass',
-                info : {
-                    parent : getSuiteName(test.parent),
-                    title : test.title,
-                    speed : speed,
-                    duration : duration
+                orderId: id,
+                action: 'pass',
+                info: {
+                    parent: getSuiteName(test.parent),
+                    title: test.title,
+                    speed: speed,
+                    duration: duration
                 }
             })
         })
@@ -39,12 +39,12 @@
         runner.on('fail', function(test, err) {
             stats.failures++
             report({
-                orderId : id,
-                action : 'fail',
-                info : {
-                    parent : getSuiteName(test.parent),
-                    title : test.title,
-                    message : err.message
+                orderId: id,
+                action: 'fail',
+                info: {
+                    parent: getSuiteName(test.parent),
+                    title: test.title,
+                    message: err.message
                 }
             })
         })
@@ -52,11 +52,11 @@
         runner.on('pending', function(test) {
             stats.pending++
             report({
-                orderId : id,
-                action : 'pending',
-                info : {
-                    parent : getSuiteName(test.parent),
-                    title : test.title
+                orderId: id,
+                action: 'pending',
+                info: {
+                    parent: getSuiteName(test.parent),
+                    title: test.title
                 }
             })
         })
@@ -72,9 +72,9 @@
         runner.on('end', function() {
             stats.duration = new Date() - start
             report({
-                orderId : id,
-                action : 'end',
-                info : stats
+                orderId: id,
+                action: 'end',
+                info: stats
             })
         })
     })
