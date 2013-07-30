@@ -13,7 +13,7 @@
         "fool2fish <fool2fish@gmail.com>"
     ],
     "engines": {
-        "node": "0.8.17 - 0.10.7"
+        "node": ">= 0.10.12"
     },
     "dependencies": {
         "commander": "1.1.1",
@@ -28,8 +28,8 @@
         "iconv-lite": "0.2.8",
         "request": "2.21.0",
         "jscoverage": "0.3.7",
-        "mongoose": "~3.6.15",
-        "dateformat": "*"
+        "mongoose": "3.6.15",
+        "dateformat": "1.0.6-1.2.3"
     },
     "devDependencies": {
         "grunt": "0.4.1",
