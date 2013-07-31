@@ -56,7 +56,7 @@ module.exports = function(grunt) {
             command: 'npm install totoro'
         },
         installBrowsers: {
-            commnand: ['npm install browsers']
+            command: 'npm install browsers'
         }
     },
 
@@ -80,8 +80,8 @@ module.exports = function(grunt) {
       }
 
       if (!grunt.file.exists(path.resolve('node_modules', 'browsers'))) {
-          shelljs.exec('npm install browsers')
-          //grunt.task.run('shell:installBrowsers');
+          //shelljs.exec('npm install browsers')
+          grunt.task.run('shell:installBrowsers');
       }
   });
 
