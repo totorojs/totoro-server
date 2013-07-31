@@ -71,13 +71,15 @@ describe('test sample project', function() {
 
     it('test totoro list', function(done) {
         var serverHost = capture.slice(0, capture.indexOf(':'))
+        var serverPort = capture.slice(capture.indexOf(':') + 1)
         // var listInfo = shelljs.exec(totoroCmd + ' list', {async: false, slient: true}).output
-        var listInfo = shelljs.exec(totoroCmd + ' list --server-host=' + serverHost , {async: false}).output
+        var listInfo = shelljs.exec(totoroCmd + ' list --server-host=' + serverHost +
+                                    ' --server-port=' + serverPort , {async: false}).output
         expect(listInfo + '').to.match(/chrome/)
 
         setTimeout(function() {
           done()
-        }, 1000)
+        }, 3000)
     })
 
     it('test project', function() {
