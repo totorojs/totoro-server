@@ -82,10 +82,46 @@ describe('test sample project', function() {
         }, 1000)
     })
 
-    it('test project', function() {
+    var examplesDir = path.resolve('totoro', 'examples')
+
+    it('test config-file', function() {
+        var result = shelljs.exec(totoroCmd + getRunner('config-file'), {slient: true}).output
+        expect(result).to.match(/Passed all of 2 tests/)
+    })
+
+    it('test custom-testing-framework by seajs', function() {
 
     })
 
+    it('test jasmine', function() {
+        var result = shelljs.exec(totoroCmd + getRunner('jasmine'), {slient: true}).output
+        expect(result).to.contain('Passed all of 6 tests')
+    })
+
+    it('test mocha', function() {
+        var result = shelljs.exec(totoroCmd + getRunner('mocha'), {slient: true}).output
+        expect(result).to.contain('Passed all of 14 tests')
+    })
+
+    it('test online-runner', function() {
+        var result = shelljs.exec(totoroCmd + ' --runner=http://aralejs.org/base/tests/runner.html', {slient: true}).output
+        expect(result).to.contain('Passed all of 32 tests')
+    })
+
+    it('test simple', function() {
+        var result = shelljs.exec(totoroCmd + getRunner('simple'), {slient: true}).output
+        expect(result).to.contain('Passed all of 1 tests')
+    })
+
+    it('test syntax-error', function() {
+        var result = shelljs.exec(totoroCmd + getRunner('syntax-error'), {slient: true}).output
+        expect(result).to.contain('Uncaught ReferenceError: undef is not defined')
+    })
+
+    it('test test-fail', function() {
+        var result = shelljs.exec(totoroCmd + getRunner('test-fail'), {slient: true}).output
+        expect(result).to.contain('Test Suit Sub Test Suit > Sub Test Unit > expected \'sub assertion\' to be a number')
+    })
 
 
     after(function(done) {
@@ -97,4 +133,9 @@ describe('test sample project', function() {
         })
         //shelljs.exec('kill -9 ' + browsers.pid)
     })
+
+    function getRunner(project) {
+        return ' --runner=' + path.join(examplesDir, project, 'tests', 'runner.html')
+    }
 })
+
