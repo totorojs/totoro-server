@@ -79,7 +79,7 @@ describe('test sample project', function() {
 
         setTimeout(function() {
           done()
-        }, 3000)
+        }, 1000)
     })
 
     it('test project', function() {
