@@ -9,7 +9,7 @@
 'use strict';
 
 var path = require('path')
-var shell = require('shelljs');
+var shelljs = require('shelljs');
 
 module.exports = function(grunt) {
 
@@ -17,14 +17,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-
-  if (!grunt.file.exists(path.resolve('node_modules', 'totoro'))) {
-      shell.exec('npm install totoro');
-  }
-
-  if (!grunt.file.exists(path.resolve('node_modules', 'browsers'))) {
-      shell.exec('npm install browsers');
-  }
 
 
   // Project configuration.
@@ -39,6 +31,35 @@ module.exports = function(grunt) {
       }
     },
 
+    shell: {
+        options: {
+            stdout: true,
+            stderr: true,
+            execOptions: {
+                cwd: './node_modules/'
+            }
+        },
+        installTotoroDev: {
+            command: [
+                'git clone https://github.com/totorojs/totoro.git',
+                'cd totoro',
+                'npm install .'
+            ].join('&&'),
+        },
+        updateTotoroDev: {
+            command: [
+                'cd totoro',
+                'git pull'
+            ].join('&&')
+        },
+        totoroNpm: {
+            command: 'npm install totoro'
+        },
+        installBrowsers: {
+            commnand: 'npm install browsers'
+        }
+    },
+
     mochaTest: {
       all: {
         options: {
@@ -51,6 +72,18 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('loadResource', 'install totoro and browsrs', function() {
+      if (!grunt.file.exists(path.resolve('node_modules', 'totoro'))) {
+          grunt.task.run('shell:installTotoroDev');
+      } else {
+          grunt.task.run('shell:updateTotoroDev');
+      }
+
+      if (!grunt.file.exists(path.resolve('node_modules', 'browsers'))) {
+          grunt.task.run('shell:installBrowsers');
+      }
+  });
 
   grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('test', ['loadResource', 'mochaTest']);
 };

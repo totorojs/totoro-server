@@ -24,13 +24,14 @@ describe('Test start totoro server ', function() {
     })
 
     it('check totoro client', function(done) {
+
         var version = shelljs.exec('node totoro/bin/totoro --version', {slient: true}).output
-        expect(version).to.match(/0\.2\.3/)
+        expect(version).to.match(/0\.3\.[\d]/)
         done()
     })
 })
 
-describe('test sample project test', function() {
+describe('test sample project', function() {
     var server, browsers, capture
 
 
@@ -72,7 +73,7 @@ describe('test sample project test', function() {
         var serverHost = capture.slice(0, capture.indexOf(':'))
         // var listInfo = shelljs.exec(totoroCmd + ' list', {async: false, slient: true}).output
         var listInfo = shelljs.exec(totoroCmd + ' list --server-host=' + serverHost , {async: false}).output
-        expect(listInfo + '').to.match(/active browsers/)
+        expect(listInfo + '').to.match(/chrome/)
 
         setTimeout(function() {
           done()
