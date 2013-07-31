@@ -1,6 +1,5 @@
 var path = require('path')
 var expect = require('expect.js')
-var should = require('should')
 var sinon = require('sinon')
 var shelljs = require('shelljs')
 
