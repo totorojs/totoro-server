@@ -32,8 +32,7 @@ describe('Test start totoro server ', function() {
 })
 
 describe('test sample project', function() {
-    var server, browsers, capture
-
+    var server, browsers, capture, serverHost, serverPort
 
     shelljs.cd(path.resolve('node_modules'))
 
@@ -63,6 +62,8 @@ describe('test sample project', function() {
         })
 
         browsersDefer.promise.then(function() {
+            serverHost = capture.slice(0, capture.indexOf(':'))
+            serverPort = capture.slice(capture.indexOf(':') + 1)
             done()
         })
     })
@@ -70,11 +71,8 @@ describe('test sample project', function() {
     var totoroCmd = 'node totoro/bin/totoro'
 
     it('test totoro list', function(done) {
-        var serverHost = capture.slice(0, capture.indexOf(':'))
-        var serverPort = capture.slice(capture.indexOf(':') + 1)
         // var listInfo = shelljs.exec(totoroCmd + ' list', {async: false, slient: true}).output
-        var listInfo = shelljs.exec(totoroCmd + ' list --server-host=' + serverHost +
-                                    ' --server-port=' + serverPort , {async: false}).output
+        var listInfo = shelljs.exec(totoroCmd + ' list ' + getServerHost() + getServerPort(), {async: false}).output
         expect(listInfo + '').to.match(/chrome/)
 
         setTimeout(function() {
@@ -85,41 +83,43 @@ describe('test sample project', function() {
     var examplesDir = path.resolve('totoro', 'examples')
 
     it('test config-file', function() {
-        var result = shelljs.exec(totoroCmd + getRunner('config-file'), {slient: true}).output
-        expect(result).to.match(/Passed all of 2 tests/)
+        var result = shelljs.exec(getTotoroTestCmd(getRunner('config-file')), {slient: true}).output
+        expect(result).to.contain('Passed all of 2 tests')
     })
 
-    it('test custom-testing-framework by seajs', function() {
-
+    it.skip('test custom-testing-framework by seajs', function() {
+        var result = shelljs.exec(getTotoroTestCmd(' --runner=http://seajs.github.io/seajs/tests/runner.html') +
+             ' --adapter=http://seajs.github.io/seajs/tests/totoro-adapter.js', {slient: true}).output
+        expect(result).to.match(/Passed all of \d+\s+tests/)
     })
 
     it('test jasmine', function() {
-        var result = shelljs.exec(totoroCmd + getRunner('jasmine'), {slient: true}).output
+        var result = shelljs.exec(getTotoroTestCmd(getRunner('jasmine')), {slient: true}).output
         expect(result).to.contain('Passed all of 6 tests')
     })
 
     it('test mocha', function() {
-        var result = shelljs.exec(totoroCmd + getRunner('mocha'), {slient: true}).output
+        var result = shelljs.exec(getTotoroTestCmd(getRunner('mocha')), {slient: true}).output
         expect(result).to.contain('Passed all of 14 tests')
     })
 
     it('test online-runner', function() {
-        var result = shelljs.exec(totoroCmd + ' --runner=http://aralejs.org/base/tests/runner.html', {slient: true}).output
+        var result = shelljs.exec(getTotoroTestCmd(' --runner=http://aralejs.org/base/tests/runner.html'), {slient: true}).output
         expect(result).to.contain('Passed all of 32 tests')
     })
 
     it('test simple', function() {
-        var result = shelljs.exec(totoroCmd + getRunner('simple'), {slient: true}).output
+        var result = shelljs.exec(getTotoroTestCmd(getRunner('simple')), {slient: true}).output
         expect(result).to.contain('Passed all of 1 tests')
     })
 
     it('test syntax-error', function() {
-        var result = shelljs.exec(totoroCmd + getRunner('syntax-error'), {slient: true}).output
+        var result = shelljs.exec(getTotoroTestCmd(getRunner('syntax-error')), {slient: true}).output
         expect(result).to.contain('Uncaught ReferenceError: undef is not defined')
     })
 
     it('test test-fail', function() {
-        var result = shelljs.exec(totoroCmd + getRunner('test-fail'), {slient: true}).output
+        var result = shelljs.exec(getTotoroTestCmd(getRunner('test-fail')), {slient: true}).output
         expect(result).to.contain('Test Suit Sub Test Suit > Sub Test Unit > expected \'sub assertion\' to be a number')
     })
 
@@ -136,6 +136,17 @@ describe('test sample project', function() {
 
     function getRunner(project) {
         return ' --runner=' + path.join(examplesDir, project, 'tests', 'runner.html')
+    }
+
+    function getServerHost() {
+        return ' --server-host=' + serverHost
+    }
+
+    function getServerPort() {
+        return ' --server-port=' + serverPort
+    }
+    function getTotoroTestCmd(runner) {
+        return totoroCmd + runner + getServerHost() + getServerPort()
     }
 })
 
