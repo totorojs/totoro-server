@@ -80,7 +80,6 @@ module.exports = function(grunt) {
       }
 
       if (!grunt.file.exists(path.resolve('node_modules', 'browsers'))) {
-          //shelljs.exec('npm install browsers')
           grunt.task.run('shell:installBrowsers');
       }
   });
