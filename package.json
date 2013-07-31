@@ -38,7 +38,8 @@
         "grunt-contrib-jshint": "0.3.0",
         "mocha": "*",
         "expect.js": "*",
-        "sinon": "*"
+        "sinon": "*",
+        "shelljs": "*"
     },
     "repository": {
         "type": "git",
