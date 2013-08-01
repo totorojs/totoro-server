@@ -1,14 +1,18 @@
-![totoro - 前端质量保证工具集](https://f.cloud.github.com/assets/340282/401517/4563cedc-a8dd-11e2-814d-36494351adfa.jpg)
+![totoro](https://f.cloud.github.com/assets/340282/891339/657d9018-fa54-11e2-9760-6955388fd8fc.jpg)
 
 # totoro-server
 
 totoro 的服务端。
 
-最新版本：v0.2.0 
+最新版本：v0.3.0 
 
 ---
 
 ## 1. 安装
+
+### node 版本要求
+
+    >= 0.8.17
 
 ### 从 npm 安装
 
@@ -24,9 +28,9 @@ totoro 的服务端。
     
 ## 2. 快速上手
 
-    $ totoro-server
+    $ totoro-server --verbose
     
-然后使用任意浏览器访问 {{ip}}:9999 页面即可运行测试。
+然后使用任意浏览器访问 {{ip}}:9999 页面即可成为测试浏览器。
 
 ## 3. 命令行配置项
 
@@ -54,7 +58,7 @@ totoro 的服务端。
 
 ## 4. 配置文件
 
-会自动读取启动时所在目录是否有 totoro-config.json，配置项使用的是 **首字母小写的驼峰式命名**。
+会自动读取启动时所在目录是否有 totoro-server-config.json，配置项使用的是 **首字母小写的驼峰式命名**。
 
 ## 5. 关于
 
