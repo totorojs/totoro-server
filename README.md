@@ -4,7 +4,7 @@
 
 totoro 的服务端。
 
-最新版本：v0.3.0 
+最新版本：v0.3.0
 
 ---
 
@@ -12,7 +12,7 @@ totoro 的服务端。
 
 ### node 版本要求
 
-    >= 0.8.17
+    >= 0.10.12
 
 ### 从 npm 安装
 
@@ -25,11 +25,11 @@ totoro 的服务端。
     $ git clone git@github.com:totorojs/totoro-server.git
     $ cd totoro-server
     $ sudo npm install -g
-    
+
 ## 2. 快速上手
 
     $ totoro-server --verbose
-    
+
 然后使用任意浏览器访问 {{ip}}:9999 页面即可成为测试浏览器。
 
 ## 3. 命令行配置项
