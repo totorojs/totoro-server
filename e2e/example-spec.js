@@ -5,10 +5,11 @@ var shelljs = require('shelljs')
 var when = require('when')
 
 
+shelljs.cd(path.join(process.cwd(), 'node_modules'))
+
 describe('Test start totoro server ', function() {
     var logDatas = []
 
-    shelljs.cd(path.resolve('node_modules'))
     it('log succ info', function(done) {
         var start = shelljs.exec('node ../bin/totoro-server', {async: true});
         start.stdout.on('data', function(data) {
@@ -32,16 +33,15 @@ describe('Test start totoro server ', function() {
 })
 
 describe('test sample project', function() {
+    this.timeout(1000000)
     var server, browsers, capture, serverHost, serverPort
-
-    shelljs.cd(path.resolve('node_modules'))
 
     before(function(done) {
         var serverDefer = when.defer()
         var browsersDefer = when.defer()
 
         // start server
-        server = shelljs.exec('node ../bin/totoro-server --verbose', {async: true});
+        server = shelljs.exec('node ../bin/totoro-server', {async: true, slient: true});
         server.stdout.on('data', function(data) {
             if (data.indexOf('Start server') > -1) {
                 capture = data.match(/<([^>]+)/)[1]
@@ -87,30 +87,43 @@ describe('test sample project', function() {
         expect(result).to.contain('Passed all of 2 tests')
     })
 
-    it.skip('test custom-testing-framework by seajs', function() {
-        var result = shelljs.exec(getTotoroTestCmd(' --runner=http://seajs.github.io/seajs/tests/runner.html') +
-             ' --adapter=http://seajs.github.io/seajs/tests/totoro-adapter.js', {slient: true}).output
-        expect(result).to.match(/Passed all of \d+\s+tests/)
+
+    it('test custom-testing-framework by seajs', function(done) {
+        var seajs = shelljs.exec(getTotoroTestCmd(' --runner=http://seajs.github.io/seajs/tests/runner.html') +
+             ' --adapter=http://seajs.github.io/seajs/tests/totoro-adapter.js', {async: true})
+
+        seajs.stdout.on('data', function(data) {
+            console.info('seajs test running...')
+            if (data.indexOf('Passed on all of') > -1) {
+                expect(data).to.match(/Passed on all of \d\s+browsers/)
+                done()
+            }
+        })
+
+        seajs.stderr.on('data', function(err) {
+            expect(err).to.be(null)
+            done()
+        })
     })
 
     it('test jasmine', function() {
         var result = shelljs.exec(getTotoroTestCmd(getRunner('jasmine')), {slient: true}).output
-        expect(result).to.contain('Passed all of 6 tests')
+        expect(result).to.match(/Passed all of \d+\s+tests/)
     })
 
     it('test mocha', function() {
         var result = shelljs.exec(getTotoroTestCmd(getRunner('mocha')), {slient: true}).output
-        expect(result).to.contain('Passed all of 14 tests')
+        expect(result).to.match(/Passed all of \d+\s+tests/)
     })
 
     it('test online-runner', function() {
         var result = shelljs.exec(getTotoroTestCmd(' --runner=http://aralejs.org/base/tests/runner.html'), {slient: true}).output
-        expect(result).to.contain('Passed all of 32 tests')
+        expect(result).to.match(/Passed all of \d+\s+tests/)
     })
 
     it('test simple', function() {
         var result = shelljs.exec(getTotoroTestCmd(getRunner('simple')), {slient: true}).output
-        expect(result).to.contain('Passed all of 1 tests')
+        expect(result).to.match(/Passed all of \d+\s+tests/)
     })
 
     it('test syntax-error', function() {

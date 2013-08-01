@@ -65,7 +65,7 @@ module.exports = function(grunt) {
         options: {
             reporter: 'spec',
             // tests are quite slow as thy spawn node processes
-            timeout: 10000
+            timeout: 1000000
         },
         src: ['e2e/*.js']
       }
