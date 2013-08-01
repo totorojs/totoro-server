@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path')
 var expect = require('expect.js')
 var sinon = require('sinon')

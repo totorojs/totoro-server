@@ -22,5 +22,6 @@
   "sub": true,
   "node": true,
   "passfail": false,
-  "white": false
+  "white": false,
+  "predef": ["it", "describe", "before", "after"]
 }
