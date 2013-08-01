@@ -67,7 +67,7 @@ module.exports = function(grunt) {
             // tests are quite slow as thy spawn node processes
             timeout: 1000000
         },
-        src: ['e2e/*.js']
+        src: ['fntest/*.js']
       }
     }
   });
