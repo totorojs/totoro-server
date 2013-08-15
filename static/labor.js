@@ -101,24 +101,39 @@
     var labor = new Labor()
 
     window.report = function(data) {
-        if (data.action === 'end' && !data.info.error) {
-            var orderId = data.orderId
-            var orderEl = labor.orders[orderId].contentWindow
-
-            if (orderEl._$jscoverage) {
-                var cov = map(orderEl._$jscoverage)
-                ;delete cov.files
-                data.info.coverage = cov
-            }
-        }
-
-        labor.reports.push(data)
-
         if (data.action === 'end') {
             var orderId = data.orderId
             console.log('finish order: ' + orderId)
+
+            /*
+             * NOTE
+             *
+             * see #33
+             */
+            data.info = copy(data.info)
+
+            if (!data.info.error) {
+                var orderEl = labor.orders[orderId].contentWindow
+                if (orderEl._$jscoverage) {
+                    var cov = map(orderEl._$jscoverage)
+                    ;delete cov.files
+                    data.info.coverage = cov
+                }
+            }
+
             labor.remove(orderId)
         }
+
+        labor.reports.push(data)
+    }
+
+
+    function copy(data) {
+        var rt = {}
+        for(var i in data){
+            rt[i] = data[i]
+        }
+        return rt
     }
 
 
