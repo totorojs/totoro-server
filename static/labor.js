@@ -118,7 +118,8 @@
                     var cov = map(orderEl._$jscoverage)
                     ;delete cov.files
                     data.info.coverage = cov
-                    data.info.coverage_misses = cov._misses
+
+                    data.info.coverage.missesDetail = cov.missesDetail
                 }
             }
 
@@ -154,10 +155,11 @@
             sloc: 0,
             hits: 0,
             misses: 0,
-            _misses: {},
             coverage: 0,
             files: []
         }
+
+        var missesDetail = {}
 
         for (var filename in cov) {
             var data = coverage(filename, cov[filename])
@@ -165,7 +167,7 @@
             ret.hits += data.hits
 
             if (data.misses.length) {
-                ret._misses[filename] = data.misses
+                missesDetail[filename] = data.misses
             }
 
             ret.misses += data.misses.length
@@ -178,6 +180,10 @@
 
         if (ret.sloc > 0) {
             ret.coverage = (ret.hits / ret.sloc) * 100
+
+            if (ret.coverage > 90) {
+                ret['missesDetail'] = missesDetail
+            }
         }
 
         return ret
