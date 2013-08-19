@@ -118,6 +118,7 @@
                     var cov = map(orderEl._$jscoverage)
                     ;delete cov.files
                     data.info.coverage = cov
+                    data.info.coverage_misses = cov._misses
                 }
             }
 
@@ -153,6 +154,7 @@
             sloc: 0,
             hits: 0,
             misses: 0,
+            _misses: {},
             coverage: 0,
             files: []
         }
@@ -161,7 +163,12 @@
             var data = coverage(filename, cov[filename])
             ret.files.push(data)
             ret.hits += data.hits
-            ret.misses += data.misses
+
+            if (data.misses.length) {
+                ret._misses[filename] = data.misses
+            }
+
+            ret.misses += data.misses.length
             ret.sloc += data.sloc
         }
 
@@ -190,7 +197,7 @@
             filename: filename,
             coverage: 0,
             hits: 0,
-            misses: 0,
+            misses: [],
             sloc: 0,
             source: {}
         };
@@ -202,7 +209,7 @@
             num++
 
             if (data[num] === 0) {
-                ret.misses++
+                ret.misses.push(num)
                 ret.sloc++
             } else if (data[num] !== undefined) {
                 ret.hits++
