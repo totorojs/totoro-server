@@ -118,8 +118,6 @@
                     var cov = map(orderEl._$jscoverage)
                     ;delete cov.files
                     data.info.coverage = cov
-
-                    data.info.coverage.missesDetail = cov.missesDetail
                 }
             }
 
@@ -181,7 +179,7 @@
         if (ret.sloc > 0) {
             ret.coverage = (ret.hits / ret.sloc) * 100
 
-            if (ret.coverage > 90) {
+            if (ret.coverage > 60) {
                 ret['missesDetail'] = missesDetail
             }
         }
