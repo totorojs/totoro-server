@@ -6,7 +6,7 @@ var path = require('path')
 var color = require('colorful')
 
 var common = require('totoro-common')
-var Server = require('../lib/server')
+var Server = require('../lib/')
 
 
 commander.helpInformation = function() {
