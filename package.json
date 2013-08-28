@@ -8,9 +8,9 @@
         "unit test",
         "automation"
     ],
-    "author": "kangpangpang <kangpangpang@gmail.com>",
+    "author": "fool2fish <fool2fish@gmail.com>",
     "contributors": [
-        "fool2fish <fool2fish@gmail.com>"
+        "kangpangpang <kangpangpang@gmail.com>"
     ],
     "engines": {
         "node": ">= 0.10.12"
@@ -45,7 +45,6 @@
         "type": "git",
         "url": "git@github.com:totorojs/totoro-server.git"
     },
-    "main":"./lib/server",
     "bin": {
         "totoro-server": "./bin/totoro-server"
     },
