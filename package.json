@@ -48,5 +48,8 @@
     "bin": {
         "totoro-server": "./bin/totoro-server"
     },
+    "scripts": {
+        "test": "mocha tests/"
+    },
     "preferGlobal": true
 }
