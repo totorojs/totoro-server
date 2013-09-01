@@ -70,6 +70,7 @@
         element.src = src
         document.body.appendChild(element)
         this.orders[orderId] = element
+        this.orders[orderId].verbose = data.verbose
 
         console.log('add order: ' + src)
     }
@@ -114,8 +115,10 @@
 
             if (!data.info.error) {
                 var orderEl = labor.orders[orderId].contentWindow
+                var verbose = labor.orders[orderId].verbose
+
                 if (orderEl._$jscoverage) {
-                    var cov = map(orderEl._$jscoverage)
+                    var cov = map(orderEl._$jscoverage, verbose)
                     ;delete cov.files
                     data.info.coverage = cov
                 }
@@ -148,7 +151,7 @@
      * @return {Object}
      * @api private
      */
-    function map(cov) {
+    function map(cov, verbose) {
         var ret = {
             sloc: 0,
             hits: 0,
@@ -179,7 +182,7 @@
         if (ret.sloc > 0) {
             ret.coverage = (ret.hits / ret.sloc) * 100
 
-            if (ret.coverage > 60) {
+            if (verbose) {
                 ret['missesDetail'] = missesDetail
             }
         }
