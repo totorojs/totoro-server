@@ -1,26 +1,28 @@
-/*
- * totoro-server
- * https://github.com/totorojs/totoro-server
- *
- * Copyright (c) 2013 kangpangpang, fool2fish
- * Licensed under the MIT license.
- */
-
 'use strict';
 
 var path = require('path')
-var shelljs = require('shelljs');
+var shelljs = require('shelljs')
+
 
 module.exports = function(grunt) {
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+    // These plugins provide necessary tasks.
+    grunt.loadNpmTasks('grunt-shell')
+    grunt.loadNpmTasks('grunt-mocha-test')
+    grunt.loadNpmTasks('grunt-contrib-jshint')
 
 
-  // Project configuration.
-  grunt.initConfig({
+    // Project configuration.
+    grunt.initConfig({
+
+        cafemocha: {
+            src: 'tests/*-spec.js',
+            options: {
+                ui: 'bdd',
+                reporter: 'dot'
+            }
+        },
+
     jshint: {
       all: [
           'Gruntfile.js',
@@ -61,17 +63,25 @@ module.exports = function(grunt) {
         }
     },
 
-    mochaTest: {
-      all: {
-        options: {
-            reporter: 'spec',
-            // tests are quite slow as thy spawn node processes
-            timeout: 1000000
-        },
-        src: ['fntest/*.js']
-      }
-    }
-  });
+        mochaTest: {
+
+            unittest: {
+                options: {
+                    reporter: 'dot'
+                },
+                src: ['tests/*-spec.js']
+            },
+
+            fntest: {
+                options: {
+                    reporter: 'spec',
+                    // tests are quite slow as thy spawn node processes
+                    timeout: 1000000
+                },
+                src: ['fntest/*.js']
+            }
+        }
+    })
 
   grunt.registerTask('loadResource', 'install totoro and browsrs', function() {
       if (!grunt.file.exists(path.resolve('node_modules', 'totoro'))) {
@@ -85,6 +95,11 @@ module.exports = function(grunt) {
       }
   });
 
-  grunt.registerTask('default', ['jshint']);
-  grunt.registerTask('fntest', ['loadResource', 'mochaTest']);
+    grunt.registerTask('coverage', 'generate coverage info', function() {
+        console.log('hello')
+    })
+
+    grunt.registerTask('default', ['jshint']);
+    grunt.registerTask('fntest', ['loadResource', 'mochaTest:fntest']);
+    grunt.registerTask('test', ['mochaTest:unittest']);
 };
