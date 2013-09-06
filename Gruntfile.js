@@ -18,8 +18,8 @@ module.exports = function(grunt) {
         jshint: {
             all: [
                 'Gruntfile.js',
-                'lib/**/*.js',
-                'fntest/**/*.js'
+                'lib/*.js',
+                'fn-tests/*.js'
             ],
             options: {
                 'jshintrc': '.jshintrc'
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
                     // tests are quite slow as thy spawn node processes
                     timeout: 1000000
                 },
-                src: ['fntest/*.js']
+                src: ['fn-tests/*.js']
             }
         }
     })
