@@ -15,53 +15,45 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
 
-        cafemocha: {
-            src: 'tests/*-spec.js',
+        jshint: {
+            all: [
+                'Gruntfile.js',
+                'lib/**/*.js',
+                'fntest/**/*.js'
+            ],
             options: {
-                ui: 'bdd',
-                reporter: 'dot'
+                'jshintrc': '.jshintrc'
             }
         },
 
-    jshint: {
-      all: [
-          'Gruntfile.js',
-          'lib/**/*.js',
-          'fntest/**/*.js'
-      ],
-      options: {
-          'jshintrc': '.jshintrc'
-      }
-    },
-
-    shell: {
-        options: {
-            stdout: true,
-            stderr: true,
-            execOptions: {
-                cwd: './node_modules/'
+        shell: {
+            options: {
+                stdout: true,
+                stderr: true,
+                execOptions: {
+                    cwd: './node_modules/'
+                }
+            },
+            installTotoroDev: {
+                command: [
+                    'git clone https://github.com/totorojs/totoro.git',
+                    'cd totoro',
+                    'npm install .'
+                ].join('&&'),
+            },
+            updateTotoroDev: {
+                command: [
+                    'cd totoro',
+                    'git pull'
+                ].join('&&')
+            },
+            totoroNpm: {
+                command: 'npm install totoro'
+            },
+            installBrowsers: {
+                command: 'npm install browsers'
             }
         },
-        installTotoroDev: {
-            command: [
-                'git clone https://github.com/totorojs/totoro.git',
-                'cd totoro',
-                'npm install .'
-            ].join('&&'),
-        },
-        updateTotoroDev: {
-            command: [
-                'cd totoro',
-                'git pull'
-            ].join('&&')
-        },
-        totoroNpm: {
-            command: 'npm install totoro'
-        },
-        installBrowsers: {
-            command: 'npm install browsers'
-        }
-    },
 
         mochaTest: {
 
@@ -83,23 +75,23 @@ module.exports = function(grunt) {
         }
     })
 
-  grunt.registerTask('loadResource', 'install totoro and browsrs', function() {
-      if (!grunt.file.exists(path.resolve('node_modules', 'totoro'))) {
-          grunt.task.run('shell:installTotoroDev');
-      } else {
-          grunt.task.run('shell:updateTotoroDev');
-      }
+    grunt.registerTask('loadResource', 'install totoro and browsrs', function() {
+        if (!grunt.file.exists(path.resolve('node_modules', 'totoro'))) {
+            grunt.task.run('shell:installTotoroDev')
+        } else {
+            grunt.task.run('shell:updateTotoroDev')
+        }
 
-      if (!grunt.file.exists(path.resolve('node_modules', 'browsers'))) {
-          grunt.task.run('shell:installBrowsers');
-      }
-  });
-
-    grunt.registerTask('coverage', 'generate coverage info', function() {
-        console.log('hello')
+        if (!grunt.file.exists(path.resolve('node_modules', 'browsers'))) {
+            grunt.task.run('shell:installBrowsers')
+        }
     })
 
-    grunt.registerTask('default', ['jshint']);
-    grunt.registerTask('fntest', ['loadResource', 'mochaTest:fntest']);
-    grunt.registerTask('test', ['mochaTest:unittest']);
+    grunt.registerTask('coverage', 'generate coverage info', function() {
+        console.log('\n  todo: coverage')
+    })
+
+    grunt.registerTask('default', ['jshint'])
+    grunt.registerTask('fntest', ['loadResource', 'mochaTest:fntest'])
+    grunt.registerTask('test', ['mochaTest:unittest', 'coverage'])
 };
