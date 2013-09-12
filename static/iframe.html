@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Totoro</title>
+        <style>
+            iframe {
+                width: 100%;
+                height: 120px;
+            }
+        </style>
+        <script src="https://a.alipayobjects.com/??seajs/seajs/2.1.1/sea.js,jquery/jquery/1.9.1/jquery.js"></script>
+    </head>
+    <body>
+        <h1>Totoro</h1>
+        test runner: <input id="runner" size="100px"/><input type="button" value="Add" id="add"/></br/>
+        iframe width: <input type="text" id="i_width" value="22"/>
+        iframe height: <input id="i_height"/>
+        <p>A simple, easy-to-use and stable front-end unit testing tool.</p>
+        <script>
+        seajs.use('jquery/jquery/1.9.1/jquery', function($) {
+            window.$ = $
+            setTimeout(function() {
+                $('#i_width').val($('#test_iframe').css('width'))
+                $('#i_height').val($('#test_iframe').css('height'))
+            }, 10)
+
+            $('#add').click(function() {
+                var src = $.trim($('#runner').val())
+               
+                if (!src) return
+                var element = document.createElement('iframe')
+                element.src = src
+
+                $(element).css({
+                    width: $('#i_width').val(),
+                    height: $('#i_height').val()
+                })
+
+                $('#test_iframe').after(element)
+            })
+        })
+        </script>
+
+        <iframe id="test_iframe" src="void:0" style="display:none"/>
+    </body>
+</html>
