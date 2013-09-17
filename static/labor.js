@@ -102,7 +102,7 @@
             setTimeout(function() {
                 // document.body.removeChild(element)
                 element.close()
-            }, 100)
+            }, 0)
             console.log('remove order: ' + orderId)
         }
     }
