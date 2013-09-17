@@ -1,7 +1,8 @@
 (function() {
     mocha.reporter(function(runner) {
-        var report = top.report
+        var report = totoro.report
         var id = location.href.match(/runner\/([^/]+)\//)[1]
+
         var stats = {
             suites: 0,
             tests: 0,

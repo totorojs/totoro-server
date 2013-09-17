@@ -1,7 +1,10 @@
 (function() {
     if ( typeof console === 'undefined') {
         console = {
-            log: function() {
+            log: function(msg) {
+                var el = document.createElement('div')
+                el.innerHTML = msg
+                document.body.appendChild(el)
             }
         }
     }
@@ -66,13 +69,17 @@
         var path = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
         var src = '/runner/' + data.orderId + path
 
+        var element = window.open(src, null, 'top=100,left=200,width=800,height=600')
+        /*
         var element = document.createElement('iframe')
         element.src = src
         document.body.appendChild(element)
+        */
         this.orders[orderId] = element
         this.orders[orderId].verbose = data.verbose
 
         console.log('add order: ' + src)
+
     }
 
     Labor.prototype.remove = function(orderId) {
@@ -91,9 +98,11 @@
              * as report data was cached in JSON form
              * these errors will change 'end' report's value
              */
+            // element.close()
             setTimeout(function() {
-                document.body.removeChild(element)
-            }, 0)
+                // document.body.removeChild(element)
+                element.close()
+            }, 100)
             console.log('remove order: ' + orderId)
         }
     }
@@ -101,33 +110,36 @@
 
     var labor = new Labor()
 
-    window.report = function(data) {
-        if (data.action === 'end') {
-            var orderId = data.orderId
-            console.log('finish order: ' + orderId)
 
-            /*
-             * NOTE
-             *
-             * see #33
-             */
-            data.info = copy(data.info)
+    window.totoro = {
+        report: function(data) {
+            if (data.action === 'end') {
+                var orderId = data.orderId
+                console.log('finish order: ' + orderId)
 
-            if (!data.info.error) {
-                var orderEl = labor.orders[orderId].contentWindow
-                var verbose = labor.orders[orderId].verbose
+                /*
+                 * NOTE
+                 *
+                 * see #33
+                 */
+                data.info = copy(data.info)
 
-                if (orderEl._$jscoverage) {
-                    var cov = map(orderEl._$jscoverage, verbose)
-                    ;delete cov.files
-                    data.info.coverage = cov
+                if (!data.info.error) {
+                    var element = labor.orders[orderId]
+                    var verbose = element.verbose
+
+                    if (element._$jscoverage) {
+                        var cov = map(element._$jscoverage, verbose)
+                        ;delete cov.files
+                        data.info.coverage = cov
+                    }
                 }
+
+                labor.remove(orderId)
             }
 
-            labor.remove(orderId)
+            labor.reports.push(data)
         }
-
-        labor.reports.push(data)
     }
 
 

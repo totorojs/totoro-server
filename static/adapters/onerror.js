@@ -1,6 +1,8 @@
+
 (function() {
-    var report = top.report
+    var report = totoro.report
     var id = location.href.match(/runner\/([^/]+)\//)[1]
+
     window.onerror = function(message, url, line){
         report({
             orderId: id,
