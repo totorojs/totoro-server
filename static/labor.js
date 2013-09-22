@@ -70,11 +70,6 @@
         var src = '/runner/' + data.orderId + path
 
         var element = window.open(src, null, 'top=100,left=200,width=800,height=600')
-        /*
-        var element = document.createElement('iframe')
-        element.src = src
-        document.body.appendChild(element)
-        */
         this.orders[orderId] = element
         this.orders[orderId].verbose = data.verbose
 
@@ -87,22 +82,9 @@
 
         if (element) {
             delete this.orders[orderId]
-            /*
-             * NOTE:
-             *
-             * if removeChild() is not wrapped in setTimout()
-             * this method will cause error in ie9
-             * a very short time after iframe be removed
-             * test frameworks seems still working, cause unreasonable error and report it
-             *
-             * as report data was cached in JSON form
-             * these errors will change 'end' report's value
-             */
-            // element.close()
-            setTimeout(function() {
-                // document.body.removeChild(element)
+            //setTimeout(function() {
                 element.close()
-            }, 0)
+            //}, 1100)
             console.log('remove order: ' + orderId)
         }
     }
@@ -113,16 +95,12 @@
 
     window.totoro = {
         report: function(data) {
+            data = clone(data)
+
             if (data.action === 'end') {
                 var orderId = data.orderId
                 console.log('finish order: ' + orderId)
 
-                /*
-                 * NOTE
-                 *
-                 * see #33
-                 */
-                data.info = copy(data.info)
 
                 if (!data.info.error) {
                     var element = labor.orders[orderId]
@@ -142,11 +120,23 @@
         }
     }
 
-
-    function copy(data) {
-        var rt = {}
-        for(var i in data){
-            rt[i] = data[i]
+    /*
+     * NOTE
+     *
+     * just a simple clone, not very strict
+     * see #33, #45
+     */
+    function clone(obj) {
+        var rt = (obj instanceof Array) ? [] : {}
+        for (i in obj) {
+            var item = obj[i]
+            if (item && typeof item === 'object') {
+                rt[i] = clone(item)
+            } else if (item && typeof item === 'function') {
+                rt[i] = 'function'
+            } else {
+                rt[i] = item
+            }
         }
         return rt
     }
