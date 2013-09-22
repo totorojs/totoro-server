@@ -68,13 +68,20 @@
         var orderId = data.orderId
         var path = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
         var src = '/runner/' + data.orderId + path
+        var element
 
-        var element = window.open(src, null, 'top=100,left=200,width=800,height=600')
+        if (data.uaGroup === 'mobile') {
+            element = document.createElement('iframe')
+            element.src = src
+            document.body.appendChild(element)
+        } else {
+            element = window.open(src, null, 'top=100,left=200,width=800,height=600')
+        }
+
         this.orders[orderId] = element
         this.orders[orderId].verbose = data.verbose
 
         console.log('add order: ' + src)
-
     }
 
     Labor.prototype.remove = function(orderId) {
@@ -82,9 +89,13 @@
 
         if (element) {
             delete this.orders[orderId]
-            //setTimeout(function() {
+
+            if (element.nodeName) {
+                document.body.removeChild(element)
+            } else {
                 element.close()
-            //}, 1100)
+            }
+
             console.log('remove order: ' + orderId)
         }
     }
