@@ -1,5 +1,12 @@
 
 (function() {
+
+    window.totoro = (window.opener || window.top).totoro
+
+    window.alert = function(){}
+    window.confirm = function(){return false}
+    window.prompt = function(){return null}
+
     var report = totoro.report
     var id = location.href.match(/runner\/([^/]+)\//)[1]
 
@@ -17,8 +24,4 @@
         })
         return true
     }
-
-    window.alert = function(){}
-    window.confirm = function(){return false}
-    window.prompt = function(){return null}
 })()

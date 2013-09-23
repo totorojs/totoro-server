@@ -17,8 +17,7 @@ describe('Adapt', function() {
             '<body></body>\n' +
         '</html>\n'
 
-    var adapterScript = '<script>window.totoro = (window.opener || window.top).totoro</script>' +
-        '<script src="/adapters/onerror.js"></script>' +
+    var adapterScript = '<script src="/adapters/totoro.js"></script>' +
         '<script src="/adapters/mocha.js"></script>'
 
     describe('Not specified adapter', function() {
@@ -117,9 +116,7 @@ describe('Adapt', function() {
 
             expect(rt).to.be.a('string')
             expect(rt).to.be(
-                beforeInsert +
-                '<script>window.totoro = (window.opener || window.top).totoro</script>' +
-                '<script src="/adapters/onerror.js"></script>' +
+                beforeInsert + '<script src="/adapters/totoro.js"></script>' +
                 '<script src="' + adapterUrl + '"></script>' +
                 afterInsert)
         })
@@ -131,13 +128,9 @@ describe('Adapt', function() {
 
             expect(rt).to.be.a('string')
             expect(rt).to.be(
-                beforeInsert +
-                '<script>window.totoro = (window.opener || window.top).totoro</script>' +
-                '<script src="/adapters/onerror.js"></script>' +
+                beforeInsert + '<script src="/adapters/totoro.js"></script>' +
                 '<script src="/runner/fakeId/' + adapterPath + '"></script>' +
                 afterInsert)
         })
     })
-
 })
-
