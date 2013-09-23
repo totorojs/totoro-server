@@ -15,4 +15,8 @@
         })
         return true
     }
+
+    window.alert = function(){}
+    window.confirm = function(){return false}
+    window.prompt = function(){return null}
 })()
