@@ -52,6 +52,25 @@ module.exports = function(grunt) {
             },
             installBrowsers: {
                 command: 'npm install browsers'
+            },
+
+            coverage: {
+                options: {
+                    stdout: true,
+                    stderr: true,
+                    execOptions: {
+                        cwd: './'
+                    }
+                },
+                command: [
+                    'jscoverage lib lib-cov',
+                    'mv lib lib-bak',
+                    'mv lib-cov lib',
+                    'mocha tests -R json-cov | node scripts/coverage.js',
+                    'mocha tests -R html-cov > coverage.html',
+                    'rm -rf lib',
+                    'mv lib-bak lib'
+                ].join('&&')
             }
         },
 
@@ -67,7 +86,7 @@ module.exports = function(grunt) {
             fntest: {
                 options: {
                     reporter: 'spec',
-                    // tests are quite slow as thy spawn node processes
+                    // tests are quite slow as the spawn node processes
                     timeout: 1000000
                 },
                 src: ['fn-tests/*.js']
@@ -87,11 +106,8 @@ module.exports = function(grunt) {
         }
     })
 
-    grunt.registerTask('coverage', 'generate coverage info', function() {
-        console.log('\n  todo: coverage')
-    })
-
-    grunt.registerTask('default', ['jshint'])
+    grunt.registerTask('default', ['jshint', 'test', 'coverage'])
+    grunt.registerTask('test', ['mochaTest:unittest'])
+    grunt.registerTask('coverage', ['shell:coverage'])
     grunt.registerTask('fntest', ['loadResource', 'mochaTest:fntest'])
-    grunt.registerTask('test', ['mochaTest:unittest', 'coverage'])
 };
