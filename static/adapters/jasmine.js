@@ -1,10 +1,9 @@
 (function() {
+    var report = totoro.report
+    var id = location.href.match(/runner\/([^/]+)\//)[1]
 
     var jasmine = window.jasmine
     var jasmineEnv = jasmine.getEnv()
-
-    var report = top.report
-    var id = location.href.match(/runner\/([^/]+)\//)[1]
 
     jasmineEnv.addReporter(createTotoroReporter())
 

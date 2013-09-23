@@ -1,7 +1,10 @@
 (function() {
     if ( typeof console === 'undefined') {
         console = {
-            log: function() {
+            log: function(msg) {
+                var el = document.createElement('div')
+                el.innerHTML = msg
+                document.body.appendChild(el)
             }
         }
     }
@@ -65,10 +68,16 @@
         var orderId = data.orderId
         var path = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
         var src = '/runner/' + data.orderId + path
+        var element
 
-        var element = document.createElement('iframe')
-        element.src = src
-        document.body.appendChild(element)
+        if (data.uaGroup === 'mobile') {
+            element = document.createElement('iframe')
+            element.src = src
+            document.body.appendChild(element)
+        } else {
+            element = window.open(src, null, 'top=100,left=200,width=800,height=600')
+        }
+
         this.orders[orderId] = element
         this.orders[orderId].verbose = data.verbose
 
@@ -80,20 +89,13 @@
 
         if (element) {
             delete this.orders[orderId]
-            /*
-             * NOTE:
-             *
-             * if removeChild() is not wrapped in setTimout()
-             * this method will cause error in ie9
-             * a very short time after iframe be removed
-             * test frameworks seems still working, cause unreasonable error and report it
-             *
-             * as report data was cached in JSON form
-             * these errors will change 'end' report's value
-             */
-            setTimeout(function() {
+
+            if (element.nodeName) {
                 document.body.removeChild(element)
-            }, 0)
+            } else {
+                element.close()
+            }
+
             console.log('remove order: ' + orderId)
         }
     }
@@ -101,40 +103,51 @@
 
     var labor = new Labor()
 
-    window.report = function(data) {
-        if (data.action === 'end') {
-            var orderId = data.orderId
-            console.log('finish order: ' + orderId)
 
-            /*
-             * NOTE
-             *
-             * see #33
-             */
-            data.info = copy(data.info)
+    window.totoro = {
+        report: function(data) {
+            data = clone(data)
 
-            if (!data.info.error) {
-                var orderEl = labor.orders[orderId].contentWindow
-                var verbose = labor.orders[orderId].verbose
+            if (data.action === 'end') {
+                var orderId = data.orderId
+                console.log('finish order: ' + orderId)
 
-                if (orderEl._$jscoverage) {
-                    var cov = map(orderEl._$jscoverage, verbose)
-                    ;delete cov.files
-                    data.info.coverage = cov
+
+                if (!data.info.error) {
+                    var element = labor.orders[orderId]
+                    var verbose = element.verbose
+
+                    if (element._$jscoverage) {
+                        var cov = map(element._$jscoverage, verbose)
+                        ;delete cov.files
+                        data.info.coverage = cov
+                    }
                 }
+
+                labor.remove(orderId)
             }
 
-            labor.remove(orderId)
+            labor.reports.push(data)
         }
-
-        labor.reports.push(data)
     }
 
-
-    function copy(data) {
-        var rt = {}
-        for(var i in data){
-            rt[i] = data[i]
+    /*
+     * NOTE
+     *
+     * just a simple clone, not very strict
+     * see #33, #45
+     */
+    function clone(obj) {
+        var rt = (obj instanceof Array) ? [] : {}
+        for (i in obj) {
+            var item = obj[i]
+            if (item && typeof item === 'object') {
+                rt[i] = clone(item)
+            } else if (item && typeof item === 'function') {
+                rt[i] = 'function'
+            } else {
+                rt[i] = item
+            }
         }
         return rt
     }

@@ -6,7 +6,7 @@ var expect = require('expect.js')
 
 var adapt = require('../lib/adapt')
 
-describe('adapt', function() {
+describe('Adapt', function() {
     var head =
         '<!DOCTYPE>\n' +
         '<html>\n' +
@@ -17,13 +17,14 @@ describe('adapt', function() {
             '<body></body>\n' +
         '</html>\n'
 
-    var adapterScript = '<script src="/adapters/onerror.js"></script>' +
+    var adapterScript = '<script>window.totoro = (window.opener || window.top).totoro</script>' +
+        '<script src="/adapters/onerror.js"></script>' +
         '<script src="/adapters/mocha.js"></script>'
 
-    describe('not specified adapter', function() {
+    describe('Not specified adapter', function() {
 
-        describe('can auto adapt', function() {
-            it('test framework script is in a single line', function() {
+        describe('Can auto adapt', function() {
+            it('Test framework script is in a single line', function() {
                 var beforeInsert = head +
                     '<link type="text/css" rel="stylesheet" href="http://assets.spmjs.org/gallery/mocha/1.9.0/mocha.css" />\n' +
                     '<script src="http://assets.spmjs.org/gallery/mocha/1.9.0/mocha.js"></script>'
@@ -38,7 +39,7 @@ describe('adapt', function() {
                 expect(rt).to.be(beforeInsert + adapterScript + afterInsert)
             })
 
-            it('test framework script is in mutiple lines', function() {
+            it('Test framework script is in mutiple lines', function() {
                 var beforeInsert = head +
                     '<link type="text/css" rel="stylesheet" href="http://assets.spmjs.org/gallery/mocha/1.9.0/mocha.css" />\n' +
                     '<script src="\n' +
@@ -56,7 +57,7 @@ describe('adapt', function() {
             })
         })
 
-        it('cannot auto adapt', function() {
+        it('Cannot auto adapt', function() {
             var content = head + '<script src="not-existed.js"></script>' + tail
             var rt = adapt('fakeId', content)
 
@@ -66,7 +67,7 @@ describe('adapt', function() {
     })
 
 
-    describe('specified adapter', function() {
+    describe('Specified adapter', function() {
         var beforeInsert = head +
             '<link type="text/css" rel="stylesheet" href="any-css.css" />\n' +
             '<script src="any-js.js"></script>' +
@@ -74,11 +75,11 @@ describe('adapt', function() {
         var afterInsert = tail
         var content = beforeInsert + afterInsert
 
-        describe('adapter is a keyword', function() {
+        describe('Adapter is a keyword', function() {
 
-            describe('keyword existed', function() {
+            describe('Keyword existed', function() {
 
-                it('corresponding test framework script tag existed', function() {
+                it('Corresponding test framework script tag existed', function() {
                     var beforeInsert = head +
                         '<link type="text/css" rel="stylesheet" href="http://assets.spmjs.org/gallery/mocha/1.9.0/mocha.css" />\n' +
                         '<script src="http://assets.spmjs.org/gallery/mocha/1.9.0/mocha.js"></script>'
@@ -93,7 +94,7 @@ describe('adapt', function() {
                     expect(rt).to.be(beforeInsert + adapterScript + afterInsert)
                 })
 
-                it('corresponding test framework script tag not existed', function() {
+                it('Corresponding test framework script tag not existed', function() {
                     var rt = adapt('fakeId', content, 'mocha')
 
                     expect(rt).to.be.a('string')
@@ -101,7 +102,7 @@ describe('adapt', function() {
                 })
             })
 
-            it('keyword not existed', function() {
+            it('Keyword not existed', function() {
                 var rt = adapt('fakeId', '', 'notExistedKeyword')
 
                 expect(rt).to.be.a(Error)
@@ -110,26 +111,28 @@ describe('adapt', function() {
         })
 
 
-        it('adapter is a url', function() {
+        it('Adapter is a url', function() {
             var adapterUrl = 'http://fool2fish.cn/adapter.js'
             var rt = adapt('fakeId', content, adapterUrl)
 
             expect(rt).to.be.a('string')
             expect(rt).to.be(
                 beforeInsert +
+                '<script>window.totoro = (window.opener || window.top).totoro</script>' +
                 '<script src="/adapters/onerror.js"></script>' +
                 '<script src="' + adapterUrl + '"></script>' +
                 afterInsert)
         })
 
 
-        it('adapter is a file', function() {
+        it('Adapter is a file', function() {
             var adapterPath = 'path/to/adapter.js'
             var rt = adapt('fakeId', content, adapterPath)
 
             expect(rt).to.be.a('string')
             expect(rt).to.be(
                 beforeInsert +
+                '<script>window.totoro = (window.opener || window.top).totoro</script>' +
                 '<script src="/adapters/onerror.js"></script>' +
                 '<script src="/runner/fakeId/' + adapterPath + '"></script>' +
                 afterInsert)
