@@ -117,8 +117,11 @@
                     var element = labor.orders[orderId]
                     var verbose = element.verbose
 
-                    if (element._$jscoverage) {
-                        var cov = map(element._$jscoverage, verbose)
+                    var jscoverage = element._$jscoverage ||
+                        (element.contentWindow && element.contentWindow._$jscoverage)
+
+                    if (jscoverage) {
+                        var cov = map(jscoverage, verbose)
                         ;delete cov.files
                         data.info.coverage = cov
                     }
