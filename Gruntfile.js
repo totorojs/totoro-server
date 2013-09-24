@@ -11,7 +11,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test')
     grunt.loadNpmTasks('grunt-contrib-jshint')
 
-
     // Project configuration.
     grunt.initConfig({
 
@@ -54,6 +53,14 @@ module.exports = function(grunt) {
                 command: 'npm install browsers'
             },
 
+            installMocha: {
+                command: 'npm install mocha -g'
+            },
+
+            installJscoverage: {
+                command: 'npm install jscoverage -g'
+            },
+
             coverage: {
                 options: {
                     stdout: true,
@@ -94,7 +101,7 @@ module.exports = function(grunt) {
         }
     })
 
-    grunt.registerTask('loadResource', 'install totoro and browsrs', function() {
+    grunt.registerTask('beforeFntest', 'install totoro and browsrs', function() {
         if (!grunt.file.exists(path.resolve('node_modules', 'totoro'))) {
             grunt.task.run('shell:installTotoroDev')
         } else {
@@ -106,8 +113,18 @@ module.exports = function(grunt) {
         }
     })
 
+    grunt.registerTask('beforeCoverage', 'install mocha and jscoverage', function() {
+        if (shelljs.exec('mocha --version', {silent: true}).code !== 0) {
+            grunt.task.run('shell:installMocha')
+        }
+
+        if (shelljs.exec('jscoverage --version', {silent: true}).code !== 0) {
+            grunt.task.run('shell:installJscoverage')
+        }
+    })
+
     grunt.registerTask('default', ['jshint', 'test', 'coverage'])
     grunt.registerTask('test', ['mochaTest:unittest'])
-    grunt.registerTask('coverage', ['shell:coverage'])
-    grunt.registerTask('fntest', ['loadResource', 'mochaTest:fntest'])
+    grunt.registerTask('coverage', ['beforeCoverage', 'shell:coverage'])
+    grunt.registerTask('fntest', ['beforeFntest', 'mochaTest:fntest'])
 };
