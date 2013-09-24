@@ -99,6 +99,19 @@ describe('Adapt', function() {
                     expect(rt).to.be.a('string')
                     expect(rt).to.be(beforeInsert + adapterScript + afterInsert)
                 })
+
+                it('Cannot find out where to inject', function() {
+                    var content =
+                        '<!DOCTYPE>\n' +
+                        '<html>\n' +
+                            '<body></body>\n' +
+                        '</html>\n'
+
+                    var rt = adapt('fakeId', content, 'mocha')
+
+                    expect(rt).to.be.a(Error)
+                    expect(rt.message).to.be.match(/Can not decide where to insert adapter/)
+                })
             })
 
             it('Keyword not existed', function() {
