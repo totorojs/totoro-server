@@ -138,14 +138,10 @@
         }
     }
 
-    // the function base on seajs
-    function isType(type) {
-        return function(obj) {
-            return {}.toString.call(obj) === "[object " + type + "]"
-        }
+    var isArray = Array.isArray || function(obj) {
+        return ((typeof obj.length !== 'undefined') &&
+            (typeof obj.splice !== 'undefined'))
     }
-
-    var isArray = Array.isArray || isType("Array")
 
     /*
      * NOTE
