@@ -3,6 +3,14 @@
 
     window.totoro = (window.opener || window.top).totoro
 
+    totoro.log = function() {
+        totoro.report({
+            orderId: id,
+            action: 'log',
+            info: [].slice.call(arguments, 0)
+        })
+    }
+
     window.alert = function(){}
     window.confirm = function(){return false}
     window.prompt = function(){return null}
@@ -23,14 +31,5 @@
             }
         })
         return true
-    }
-
-    // debug info
-    totoro.log = function() {
-        report({
-            orderId: id,
-            action: 'log',
-            info: [].slice.call(arguments, 0)
-        })
     }
 })()
