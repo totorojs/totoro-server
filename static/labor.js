@@ -2,9 +2,11 @@
     if ( typeof console === 'undefined') {
         console = {
             log: function(msg) {
+                /*
                 var el = document.createElement('div')
                 el.innerHTML = msg
                 document.body.appendChild(el)
+                */
             }
         }
     }
