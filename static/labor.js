@@ -138,7 +138,7 @@
         }
     }
 
-    var isArray = Array.isArray || function(obj) {
+    var isArray = function(obj) {
         return ((typeof obj.length !== 'undefined') &&
             (typeof obj.splice !== 'undefined'))
     }
