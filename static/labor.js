@@ -134,6 +134,14 @@
         }
     }
 
+    function isType(type) {
+        return function(obj) {
+            return {}.toString.call(obj) == "[object " + type + "]"
+        }
+    }
+
+    var isArray = Array.isArray || isType("Array")
+
     /*
      * NOTE
      *
@@ -141,7 +149,7 @@
      * see #33, #45
      */
     function clone(obj) {
-        var rt = (obj instanceof Array) ? [] : {}
+        var rt = (isArray(obj)) ? [] : {}
         for (i in obj) {
             var item = obj[i]
             if (item && typeof item === 'object') {
