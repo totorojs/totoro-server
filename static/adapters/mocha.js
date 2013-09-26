@@ -84,7 +84,7 @@
         var name = suite.title
         while(suite.parent){
             suite = suite.parent
-            name = (suite.title || '') + ' ' + name
+            name = (suite.title || '') + ' > ' + name
         }
         return name
     }
