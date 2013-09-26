@@ -13,7 +13,7 @@ define(function(require) {
     var isFunction = isType("Function")
 
 
-    describe('Data from this frame', function() {
+    describe('Current window', function() {
         var obj = {name: 'fool2fish'}
         var arr = ['one', 'two', 'three']
         function fn() {}
@@ -82,13 +82,8 @@ define(function(require) {
         })
     })
 
-    describe('Data from iframe', function() {
-
-    })
-
-    describe('Data from other window', function() {
+    describe('New window', function() {
         var win = window.win
-        console.log(win)
 
         describe('Array', function() {
 
@@ -155,7 +150,11 @@ define(function(require) {
 
         after(function() {
             win.close()
-            ;delete win
         })
+    })
+
+
+    describe('Iframe', function() {
+
     })
 })
