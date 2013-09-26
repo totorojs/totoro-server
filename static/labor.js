@@ -79,7 +79,7 @@
             element.src = src
             document.body.appendChild(element)
         } else {
-            element = window.open(src, null, 'top=100,left=200,width=800,height=600')
+            element = window.open(src, 'totoro_' + (new Date()).getTime(), 'top=100,left=200,width=800,height=600')
         }
 
         this.orders[orderId] = element
