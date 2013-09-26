@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Runner</title>
+        <link type="text/css" rel="stylesheet" charset="utf-8" href="http://assets.spmjs.org/gallery/mocha/1.9.0/mocha.css" />
+        <script src="http://assets.spmjs.org/seajs/seajs/2.0.0/sea.js"></script>
+        <script src="http://assets.spmjs.org/gallery/mocha/1.9.0/mocha.js"></script>
+    </head>
+    <body>
+        <div id="mocha"></div>
+        <script>
+            (function() {
+                window.win = window.open('inner.html', null, 'top=100,left=200,width=800,height=600')
+
+                mocha.ui('bdd')
+
+                seajs.config({
+                    alias:{
+                        expect: 'gallery/expect/0.2.0/expect'
+                    }
+                })
+
+                seajs.use(["./type-checking-spec.js"], function() {
+                    setTimeout(function() {
+                        mocha.run()
+                    }, 1000)
+                })
+            })()
+        </script>
+    </body>
+</html>
