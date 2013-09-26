@@ -49,7 +49,7 @@ define(function(require) {
             })
 
             it('toString()', function() {
-                expect(fn.toString()).to.be('function fn() {}')
+                expect(fn.toString()).to.be.match(/function.*\(.*\).*{.*}/)
             })
 
             it('instanceof', function() {
@@ -116,7 +116,7 @@ define(function(require) {
             })
 
             it('toString()', function() {
-                expect(win.fn.toString()).to.be('function () {}')
+                expect(win.fn.toString()).to.be.match(/function.*\(.*\).*{.*}/)
             })
 
             it('instanceof', function() {
