@@ -14,7 +14,7 @@
     - socket.io
     - net
 
-## How to
+## Run
 
 On the same computer:
 
