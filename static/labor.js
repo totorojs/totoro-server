@@ -117,7 +117,7 @@
                 console.log('finish order: ' + orderId)
 
 
-                if (!data.info.error) {
+                if (!(data.info && data.info.error)) {
                     var element = labor.orders[orderId]
                     var verbose = element.verbose
 
