@@ -3,7 +3,10 @@
 
     window.totoro = (window.opener || window.top).totoro
 
-    totoro.log = function() {
+    if ( typeof console === 'undefined') {
+        console = {}
+    }
+    console.log = function() {
         totoro.report({
             orderId: id,
             action: 'log',
