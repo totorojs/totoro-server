@@ -44,11 +44,6 @@
             that.remove(orderId)
         })
 
-        socket.on('reload', function() {
-            console.log('reload')
-            window.location.reload()
-        })
-
         socket.on('disconnect', function() {
             console.log('disconnected')
             for (var i in that.orders) {
