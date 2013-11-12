@@ -30,7 +30,7 @@ totoro 的服务端。
 
     $ totoro-server --verbose
 
-然后使用任意浏览器访问 {{ip}}:9999 页面即可成为测试浏览器。
+然后使用任意浏览器访问 {{ip}}:9999 页面即可成为测试浏览器。PC 端浏览器需要手工设置下 [允许弹出窗口](https://github.com/totorojs/totoro-server/wiki/Popup-Settings.zh)
 
 ## 3. 命令行配置项
 
