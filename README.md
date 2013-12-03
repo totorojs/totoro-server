@@ -2,64 +2,74 @@
 
 # totoro-server
 
-totoro 的服务端。
+Server side of totoro.
 
-最新版本：v0.4.1
+Latest stable version：v0.4.0
 
 ---
 
-## 1. 安装
+## 1. Installation
 
-### node 版本要求
+### Node requirement
 
-    >= 0.10.12
+\>= 0.10.12
 
-### 从 npm 安装
+### Install from npm
 
-    $ sudo npm install totoro-server -g
+```
+$ npm install totoro-server -g
+```
 
-### 从 Github 安装
+If it not works, you may add `sudo` before the command, as follows.
 
-可以体验开发中的最新功能
+### Install from github
 
-    $ git clone git@github.com:totorojs/totoro-server.git
-    $ cd totoro-server
-    $ sudo npm install -g
+To get the latest function (may not be stable)
 
-## 2. 快速上手
+```
+$ git clone git@github.com:totorojs/totoro-server.git
+$ cd totoro-server
+$ npm install -g
+```
 
-    $ totoro-server --verbose
+## 2. Quick Start
 
-然后使用任意浏览器访问 {{ip}}:9999 页面即可成为测试浏览器。PC 端浏览器需要手工设置下 [允许弹出窗口](https://github.com/totorojs/totoro-server/wiki/Popup-Settings.zh)
+```
+$ totoro-server --verbose
+```
 
-## 3. 命令行配置项
+Use any browser to visit {{yourIP}}:9999, then this browser could be used to test.
 
-#### --verbose
+### Important: you need to change browser setting to allow popup window !
 
-显示 debug 日志。
+Refer to [popup settings](https://github.com/totorojs/totoro-server/wiki/Popup-Settings.zh)
 
-默认：false
+## 3. Cli Options
 
 #### --server-host
 
-服务 host。
+Server host。
 
-默认：本机 ip
+Default: IP of this computer.
 
 #### --server-port
 
-服务 port。
+Server port。
 
-默认：9999
+Default: 9999
 
 #### --insert-scripts
 
-指定 {{ip}}:9999 页面额外插入的脚本，多个用逗号分隔。
+Specify a comman-delimited list of scripts to insert into page {{--server-host}}:{{--server-port}}.
 
-## 4. 配置文件
+Default: none
 
-会自动读取启动时所在目录是否有 totoro-server-config.json，配置项使用的是 **首字母小写的驼峰式命名**。
+#### --verbose
 
-## 5. 关于
+Show more info.
 
-totoro 的名字来自于宫崎骏导演的奇幻动画电影《龙猫》。
+Default: false
+
+## 4. Config File
+
+If you need a config file, just place `totoro-srever-config.json` in the CWD, all options are written in lower camel case.
