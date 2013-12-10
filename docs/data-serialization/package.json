@@ -1,0 +1,14 @@
+{
+    "name": "data-serialization",
+    "version": "0.0.0",
+    "description": "data-serialization",
+    "author": "fool2fish <fool2fish@gmail.com>",
+    "dependencies": {
+        "express": "3.1.0",
+        "socket.io": "0.9.14"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:totorojs/totoro-server.git"
+    }
+}
