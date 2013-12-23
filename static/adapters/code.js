@@ -1,12 +1,12 @@
-window.totoro = (window.opener || window.top).totoro
+// a special adapter for run common code rather than test code
+(function() {
+    window.totoro.end = function() {
+        this.report({
+            action: 'end',
+            orderId: location.href.match(/runner\/([^/]+)\//)[1],
+            info: {}
+        })
+    }
+})()
 
-var id = location.href.match(/runner\/([^/]+)\//)[1]
-
-window.totoro.end = function() {
-    this.report({
-        action: 'end',
-        orderId: id,
-        info: {}
-    })
-}
 
