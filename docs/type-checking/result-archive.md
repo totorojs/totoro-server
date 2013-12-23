@@ -36,6 +36,7 @@ Failed 8 of 26 tests in 423ms
   New window > Function > instanceof: expected false to be truthy
   New window > Function > typeof: expected 'object' to equal 'function'
   New window > Object > instanceof: expected false to be truthy
+  New window > Other types > Error: expected '[object Error]' to equal 'Error'
 
 ie 6.0 / windows XP
 Failed 8 of 26 tests in 594ms
@@ -47,6 +48,7 @@ Failed 8 of 26 tests in 594ms
   New window > Function > instanceof: expected false to be truthy
   New window > Function > typeof: expected 'object' to equal 'function'
   New window > Object > instanceof: expected false to be truthy
+  New window > Other types > Error: expected '[object Error]' to equal 'Error'
 
 ie 11.0 / windows 8
 Failed 3 of 26 tests in 173ms
