@@ -133,30 +133,45 @@
         }
     }
 
-    var isArray = function(obj) {
-        return ((typeof obj.length !== 'undefined') &&
-            (typeof obj.splice !== 'undefined'))
-    }
-
     /*
-     * NOTE
-     *
-     * just a simple clone, not very strict
-     * see #33, #45
+     * deep clone data from crossed window, not orthodox
+     * see #33, #45, docs/type-checking
      */
     function clone(obj) {
-        var rt = (isArray(obj)) ? [] : {}
-        for (i in obj) {
-            var item = obj[i]
-            if (item && typeof item === 'object') {
-                rt[i] = clone(item)
-            } else if (item && typeof item === 'function') {
-                rt[i] = 'function'
+        if (obj && obj.toString) {
+            var isPlainObj
+            var fnReg = /^function[^\(]*\([^\)]*\)/
+            var fnMatched
+            var objstr = obj.toString()
+
+            // plain object or array
+            /*
+             * NOTE
+             * must decide if obj is an array, because:
+             * [{...}].toString() -> [object Object]
+             */
+            if (obj.length >= 0 && obj.splice || objstr === '[object Object]') {
+                var rt = obj.length >= 0 && obj.splice ? [] : {}
+                for (var i in obj) {
+                    rt[i] = clone(obj[i])
+                }
+                return rt
+            // function
+            } else if (obj.prototype && (fnMatched = objstr.match(fnReg))) {
+                return fnMatched[0] + ' {...}'
+            // DOM
+            } else if (obj.nodeName && obj.nodeType) {
+                return '<' +
+                       obj.nodeName.toLowerCase() +
+                       (obj.id ? ' id="' + obj.id + '"': '') +
+                       (obj.className ? ' class="' + obj.className + '"' : '') +
+                       ' />'
             } else {
-                rt[i] = item
+                return objstr
             }
+        } else {
+            return obj
         }
-        return rt
     }
 
 
