@@ -64,9 +64,9 @@ Specify a comman-delimited list of scripts to insert into page {{--server-host}}
 
 Default: none
 
-#### --verbose
+#### --debug
 
-Show more info.
+Show debug log.
 
 Default: false
 
