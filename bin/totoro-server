@@ -7,40 +7,41 @@ var colorful = require('colorful')
 
 var common = require('totoro-common')
 var Server = require('../lib/')
-var pkg = require('../package')
+
 
 commander
-  .description(pkg.description)
   .option('-v, --version', 'output the version number')
   .option('-d, --debug', 'show debug log')
   .option('--server-host [s]', 'specify server host')
   .option('--server-port [n]', 'specify server port')
   .option('--insert-scripts [list]', 'insert scripts to capture service', common.split)
-  .on('version', function() {
-    console.log()
-    console.log('  ' + colorful.cyan(pkg.version))
-    console.log()
-    process.exit(0)
-  }).helpInformation = helpInfo
+  .helpInformation = helpInfo
 
 commander.parse(process.argv)
 
+if (commander.rawArgs.length === 3 && (commander.rawArgs[2] === '-v' ||
+    commander.rawArgs[2] === '--version')) {
+  var pkgFile = path.join(__dirname, '..', 'package.json')
+  var version = JSON.parse(fs.readFileSync(pkgFile)).version
+  console.info('\n  ' + colorful.cyan(version) + '\n')
+  process.exit(0)
+}
 
 new Server(common.getCfg(commander))
 
 function helpInfo() {
   return [
     '',
-    colorful.cyan('  ' + this.description()),
+    colorful.cyan('  Server side of totoro.'),
     '',
     colorful.green('  Usage:'),
-    '    ' + this._name + ' ' + this.usage(),
+    '  ' + this._name + ' ' + this.usage(),
     '',
     colorful.green('  Options:'),
-    '' + this.optionHelp().replace(/^/gm, '    '),
+    '' + this.optionHelp().replace(/^/gm, '  '),
     '',
     colorful.green('  More Info:'),
-    '    ' + colorful.underline(pkg.homepage),
+    '  ' + colorful.underline('https://github.com/totorojs/totoro-server'),
     '',
     ''
   ].join('\n')
