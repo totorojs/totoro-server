@@ -16,7 +16,6 @@ commander
   .option('-d, --debug', 'show debug log')
   .option('--server-host [s]', 'specify server host')
   .option('--server-port [n]', 'specify server port')
-  .option('--insert-scripts [list]', 'insert scripts to capture service', common.split)
   .on('version', function() {
     console.log()
     console.log('  ' + colorful.cyan(pkg.version))
