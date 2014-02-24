@@ -1,6 +1,6 @@
 (function() {
   var report = totoro.report
-  var id = location.href.match(/runner\/([^/]+)\//)[1]
+  var id = totoro.getOrderId(location.href)
 
   var jasmine = window.jasmine
   var jasmineEnv = jasmine.getEnv()

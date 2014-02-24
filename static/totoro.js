@@ -1,8 +1,7 @@
-
 (function() {
-  var id = location.href.match(/runner\/([^/]+)\//)[1]
-
   window.totoro = (window.opener || window.top).totoro
+
+  var id = totoro.getOrderId(location.href)
 
   totoro.end = function() {
     totoro.report({

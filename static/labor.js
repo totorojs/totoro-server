@@ -131,6 +131,10 @@
       }
 
       labor.reports.push(data)
+    },
+
+    getOrderId: function(url) {
+      return url.match(/(?:\?|&)?__order_id=([^&#]+)/)[1]
     }
   }
 
