@@ -65,10 +65,11 @@
 
   Labor.prototype.add = function(data) {
     var orderId = data.orderId
-    var path = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
-    var src = '/runner/' + data.orderId + path
-    var element
+    var p = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
+    var hasQuery = p.indexOf('?') !== -1
+    var src = p.replace(/(#.*$)|$/, (hasQuery ? '&' : '?') + '__order_id=' + orderId + '$1')
 
+    var element
     if (data.uaGroup === 'mobile') {
       element = document.createElement('iframe')
       element.src = src
