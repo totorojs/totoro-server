@@ -14,8 +14,8 @@ commander
   .description(pkg.description)
   .option('-v, --version', 'output the version number')
   .option('-d, --debug', 'show debug log')
-  .option('--server-host [s]', 'specify server host')
-  .option('--server-port [n]', 'specify server port')
+  .option('-H, --host [s]', 'specify server host')
+  .option('-P, --port [n]', 'specify server port')
   .on('version', function() {
     console.log()
     console.log('  ' + colorful.cyan(pkg.version))
