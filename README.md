@@ -46,25 +46,19 @@ Refer to [popup settings](https://github.com/totorojs/totoro-server/wiki/Popup-S
 
 ## 3. Cli Options
 
-#### --server-host
+#### -H, --host
 
 Server host。
 
 Default: IP of this computer.
 
-#### --server-port
+#### -P, --port
 
 Server port。
 
 Default: 9999
 
-#### --insert-scripts
-
-Specify a comman-delimited list of scripts to insert into page {{--server-host}}:{{--server-port}}.
-
-Default: none
-
-#### --debug
+#### -d, --debug
 
 Show debug log.
 
