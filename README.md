@@ -4,7 +4,7 @@
 
 Server side of totoro.
 
-Latest stable version：v0.4.0
+Latest stable version：v0.5.0
 
 ---
 
