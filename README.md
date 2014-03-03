@@ -34,15 +34,25 @@ $ npm install -g
 
 ## 2. Quick Start
 
-```
-$ totoro-server --verbose
-```
+1. Launch server.
 
-Use any browser to visit {{yourIP}}:9999, then this browser could be used to test.
+    ```
+    $ totoro-server
+    ```
+    
+    You should see a log like bellow:
+    
+    ```
+    info 2014-03-03 12:16:39 index.js:66 | Start server <{{yourIP}}:9999>
+    ```
 
-### Important: you need to change browser setting to allow popup window !
+2. Use any browser to visit {{yourIP}}:9999, then it could be used to test.
 
-Refer to [popup settings](https://github.com/totorojs/totoro-server/wiki/Popup-Settings.zh)
+3. Allowing popup setting, make sure browser won't block popup from {{yourIP}}.
+
+    Refer to [popup settings](https://github.com/totorojs/totoro-server/wiki/Popup-Settings.zh).
+
+Want to run some test? See the [quick start of totoro](https://github.com/totorojs/totoro#totoro).
 
 ## 3. Cli Options
 
