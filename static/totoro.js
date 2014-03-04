@@ -32,7 +32,7 @@
   window.onerror = function(message, url, line){
     totoro.report({
       orderId: id,
-      action: 'end',
+      action: 'onerror',
       info: {
         error: {
           message: message,
