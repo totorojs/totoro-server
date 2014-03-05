@@ -67,7 +67,7 @@
     var orderId = data.orderId
     var p = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
     var hasQuery = p.indexOf('?') !== -1
-    var src = p.replace(/(#.*$)|$/, (hasQuery ? '&' : '?') + '__order_id=' + orderId + '$1')
+    var src = p.replace(/(#.*$)|$/, (hasQuery ? '&' : '?') + '__totoro_oid=' + orderId + '$1')
 
     var element
     if (data.uaGroup === 'mobile') {
@@ -134,7 +134,7 @@
     },
 
     getOrderId: function(url) {
-      return url.match(/(?:\?|&)?__order_id=([^&#]+)/)[1]
+      return url.match(/(?:\?|&)?__totoro_oid=([^&#]+)/)[1]
     }
   }
 
