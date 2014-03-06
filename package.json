@@ -1,6 +1,6 @@
 {
   "name": "totoro-server",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Server side of totoro.",
   "homepage": "https://github.com/totorojs/totoro-server",
   "keywords": [
