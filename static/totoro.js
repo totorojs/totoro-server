@@ -34,11 +34,9 @@
       orderId: id,
       action: 'onerror',
       info: {
-        error: {
-          message: message,
-          url: url,
-          line: line
-        }
+        message: message,
+        url: url,
+        line: line
       }
     })
     return true
