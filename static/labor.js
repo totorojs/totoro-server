@@ -27,13 +27,25 @@
 
     socket.on('connect', function() {
       console.log('connected')
-      socket.emit('init', {
-        ua: navigator.userAgent
-      })
+
+      var data = {ua: navigator.userAgent}
+      var m = location.href.match(/(?:\?|&)?__totoro_did=([^&#]+)/)
+      if (m) {
+        data.driverId = m[1]
+      }
+      //console.log('Init data.', data)
+      socket.emit('init', data)
+
+      setInterval(function() {
+        socket.emit('ping')
+      }, 2000)
     })
 
-    socket.on('ping', function() {
-      clearInterval(that.timer)
+    socket.on('disconnect', function() {
+      console.log('disconnected')
+      for (var i in that.orders) {
+        that.remove(i)
+      }
     })
 
     socket.on('add', function(data) {
@@ -42,16 +54,6 @@
 
     socket.on('remove', function(orderId) {
       that.remove(orderId)
-    })
-
-    socket.on('disconnect', function() {
-      console.log('disconnected')
-      for (var i in that.orders) {
-        that.remove(i)
-      }
-      that.timer = setInterval(function() {
-        that.socket.emit('ping')
-      }, 950)
     })
 
     setInterval(function() {
