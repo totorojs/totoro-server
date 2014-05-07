@@ -23,7 +23,7 @@
 
   Labor.prototype.init = function() {
     var that = this
-    var socket = this.socket = io.connect('/labor')
+    var socket = this.socket = io.connect('/__labor')
 
     socket.on('connect', function() {
       console.log('connected')
