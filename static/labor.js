@@ -37,8 +37,8 @@
       socket.emit('init', data)
 
       setInterval(function() {
-        socket.emit('ping')
-      }, 2000)
+        socket.emit('ping', new Date().toString())
+      }, 5000)
     })
 
     socket.on('disconnect', function() {
