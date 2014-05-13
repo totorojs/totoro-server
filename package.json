@@ -5,8 +5,11 @@
   "homepage": "https://github.com/totorojs/totoro-server",
   "keywords": [
     "front-end",
-    "unit test",
-    "automation"
+    "cross-browser",
+    "testing",
+    "tool",
+    "totoro",
+    "server"
   ],
   "author": "fool2fish <fool2fish@gmail.com>",
   "contributors": [
