@@ -39,11 +39,11 @@ $ npm install -g
     ```
     $ totoro-server
     ```
-    
-    You should see a log like bellow:
-    
+
+    You should see an output like bellow:
+
     ```
-    info 2014-03-03 12:16:39 index.js:66 | Start server <{{yourIP}}:9999>
+    Start server <{{yourIP}}:9999>
     ```
 
 2. Use any browser to visit {{yourIP}}:9999, then it could be used to test.
