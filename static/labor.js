@@ -45,7 +45,7 @@
       '$1')
 
     var el
-    if (data.ua.group = 'mobile') {
+    if (data.ua.group === 'mobile') {
       el = document.createElement('iframe')
       el.src = src
       document.body.appendChild(el)
