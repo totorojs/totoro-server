@@ -17,6 +17,8 @@
     var that = this
     var socket = this.socket = io.connect('/__labor')
 
+    this.orders = {}
+
     socket.on('connect', function() {
       console.log('Connect')
       socket.emit('init', navigator.userAgent)
