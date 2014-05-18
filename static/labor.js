@@ -41,7 +41,7 @@
     var src = href.replace(
       /(#.*$)|$/,
       (hasQuery ? '&' : '?') +'__totoro_oid=' + orderId +
-      '&' + '__totoro_lid=' + laborId
+      '&' + '__totoro_lid=' + laborId +
       '$1')
 
     var el
