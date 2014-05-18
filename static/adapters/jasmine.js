@@ -1,6 +1,5 @@
 (function() {
   var report = totoro.report
-  var id = totoro.getOrderId(location.href)
 
   var jasmine = window.jasmine
   var jasmineEnv = jasmine.getEnv()
@@ -9,7 +8,6 @@
 
   function sendMessage(action, info) {
     report({
-      orderId: id,
       action: action,
       info: info
     })
