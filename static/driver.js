@@ -13,7 +13,7 @@
     }
   }
 
-  function Labor() {
+  function Driver() {
     var that = this
     var socket = this.socket = io.connect('/__labor')
 
@@ -33,7 +33,7 @@
     socket.on('remove', this.remove)
   }
 
-  Labor.prototype.add = function(data) {
+  Driver.prototype.add = function(data) {
     var orderId = data.orderId
     var laborId = data.laborId
     var href = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
@@ -58,7 +58,7 @@
     console.log('Add order <', src, '>')
   }
 
-  Labor.prototype.remove = function(data) {
+  Driver.prototype.remove = function(data) {
     var orderKey = data.orderId + '-' + data.laborId
     var el = this.orders[orderKey]
 
@@ -76,7 +76,7 @@
   }
 
 
-  var labor = new Labor()
+  var drver = new Driver()
 
 
   window.totoro = {
