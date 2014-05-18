@@ -59,13 +59,20 @@
       el = window.open(src, 'totoro_' + (new Date()).getTime(), 'top=100,left=100,width=400,height=300')
     }
 
-    this.orders[orderId + '-' + laborId] = el
+    var orderKey = orderId + '-' + laborId
+    this.orders[orderKey] = el
 
     console.log('Add order <', src, '>')
   }
 
   Driver.prototype.remove = function(data) {
-    var orderKey = data.orderId + '-' + data.laborId
+    var orderKey
+    if (typeof data === 'string' && data in this.orders) {
+      orderKey = data
+    } else {
+      orderKey = data.orderId + '-' + data.laborId
+    }
+
     var el = this.orders[orderKey]
 
     if (el) {

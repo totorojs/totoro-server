@@ -2,11 +2,21 @@
   var orderId = location.href.match(/(?:\?|&)?__totoro_oid=([^&#]+)/)[1]
   var laborId = location.href.match(/(?:\?|&)?__totoro_lid=([^&#]+)/)[1]
 
-  var report = {
+  var result = {
     customLogs: [],
-    errors: [],
     failures: [],
     status: undefined
+  }
+
+  function send(action, info) {
+    var data = {
+      body: document.body,
+      action: action,
+      orderId: orderId,
+      laborId: laborId,
+      info: info
+    }
+    $.post('/__report', clean(data))
   }
 
 
@@ -14,7 +24,7 @@
    * deep clone data from crossed window, not orthodox
    * see #33, #45, docs/type-checking
    */
-  function clone(obj) {
+  function clean(obj) {
     if (obj && obj.toString) {
       var isPlainObj
       var fnReg = /^function[^\(]*\([^\)]*\)/
@@ -30,7 +40,7 @@
       if (obj.length >= 0 && obj.splice || objstr === '[object Object]') {
         var rt = obj.length >= 0 && obj.splice ? [] : {}
         for (var i in obj) {
-          rt[i] = clone(obj[i])
+          rt[i] = clean(obj[i])
         }
         return rt
       // function
@@ -61,18 +71,18 @@
       var info = data.info
 
       switch (action) {
-        case 'log':
-          report.customLogs.push(info)
-          break
         case 'onerror':
-          report.errors.push(info)
+          send('error', info)
+          break
+        case 'log':
+          result.customLogs.push(info)
           break
         case 'pass':
           break
         case 'pending':
           break
         case 'fail':
-          report.failures.push(info)
+          result.failures.push(info)
           break
         case 'end':
           if (_$jscoverage) {
@@ -80,8 +90,8 @@
             ;delete cov.files
             info.coverage = cov
           }
-          report.stats = info
-          console.info(report)
+          result.stats = info
+          send('end', info)
           break
         default:
           break
