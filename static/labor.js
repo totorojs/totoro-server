@@ -8,97 +8,70 @@
 
         setTimeout(function() {
           document.body.removeChild(el)
-        }, 300000)
+        }, 30 * 000)
       }
     }
   }
 
   function Labor() {
-    this.orders = {}
-    this.reports = []
-    this.timer = undefined
-    this.init()
-  }
-
-
-  Labor.prototype.init = function() {
     var that = this
     var socket = this.socket = io.connect('/__labor')
 
     socket.on('connect', function() {
-      console.log('connected')
-
-      var data = {ua: navigator.userAgent}
-      var m = location.href.match(/(?:\?|&)?__totoro_did=([^&#]+)/)
-      if (m) {
-        data.driverId = m[1]
-      }
-      //console.log('Init data.', data)
-      socket.emit('init', data)
-
-      setInterval(function() {
-        socket.emit('ping', new Date().toString())
-      }, 5000)
+      console.log('Connect')
+      socket.emit('init', navigator.userAgent)
     })
 
     socket.on('disconnect', function() {
-      console.log('disconnected')
-      for (var i in that.orders) {
-        that.remove(i)
+      console.log('Disconnect')
+      for (var orderKey in that.orders) {
+        that.remove(orderKey)
       }
     })
 
-    socket.on('add', function(data) {
-      that.add(data)
-    })
-
-    socket.on('remove', function(orderId) {
-      that.remove(orderId)
-    })
-
-    setInterval(function() {
-      if (that.reports.length) {
-        var data = that.reports
-        that.reports = []
-        that.socket.emit('report', data)
-      }
-    }, 1000)
+    socket.on('add', this.add)
+    socket.on('remove', this.remove)
   }
 
   Labor.prototype.add = function(data) {
     var orderId = data.orderId
-    var p = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
-    var hasQuery = p.indexOf('?') !== -1
-    var src = p.replace(/(#.*$)|$/, (hasQuery ? '&' : '?') + '__totoro_oid=' + orderId + '$1')
+    var laborId = data.laborId
+    var href = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
+    var hasQuery = href.indexOf('?') !== -1
+    var src = href.replace(
+      /(#.*$)|$/,
+      (hasQuery ? '&' : '?') +'__totoro_oid=' + orderId +
+      '&' + '__totoro_lid=' + laborId
+      '$1')
 
-    var element
-    if (data.uaGroup === 'mobile') {
-      element = document.createElement('iframe')
-      element.src = src
-      document.body.appendChild(element)
+    var el
+    if (data.ua.group = 'mobile') {
+      el = document.createElement('iframe')
+      el.src = src
+      document.body.appendChild(el)
     } else {
-      element = window.open(src, 'totoro_' + (new Date()).getTime(), 'top=100,left=200,width=800,height=600')
+      el = window.open(src, 'totoro_' + (new Date()).getTime(), 'top=100,left=100,width=400,height=300')
     }
 
-    this.orders[orderId] = element
-    this.orders[orderId].verbose = data.verbose
+    this.orders[orderId + '-' + laborId] = el
 
-    console.log('add order: ' + src)
+    console.log('Add order <', src, '>')
   }
 
-  Labor.prototype.remove = function(orderId) {
-    var element = this.orders[orderId]
+  Labor.prototype.remove = function(data) {
+    var orderKey = data.orderId + '-' + data.laborId
+    var el = this.orders[orderKey]
 
-    if (element) {
-      delete this.orders[orderId]
+    if (el) {
+      delete this.orders[orderKey]
 
-      if (element.nodeName) {
-        document.body.removeChild(element)
+      if (el.nodeName) {
+        document.body.removeChild(el)
       } else {
-        element.close()
+        el.close()
       }
 
-      console.log('remove order: ' + orderId)
+      console.log('Remove order <', orderKey, '>')
     }
   }
 
