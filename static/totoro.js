@@ -1,8 +1,18 @@
 (function() {
+  function isType(type) {
+    return function(obj) {
+      return {}.toString.call(obj) == '[object ' + type + ']'
+    }
+  }
+  var isObject = isType("Object")
+  var isFunction = isType("Function")
+  var isArray = Array.isArray || isType("Array")
+
   var orderId = location.href.match(/(?:\?|&)?__totoro_oid=([^&#]+)/)[1]
   var laborId = location.href.match(/(?:\?|&)?__totoro_lid=([^&#]+)/)[1]
 
   var result = {
+    erros: [],
     customLogs: [],
     failures: [],
     status: undefined
@@ -10,7 +20,6 @@
 
   function send(action, info) {
     var data = {
-      body: document.body,
       action: action,
       orderId: orderId,
       laborId: laborId,
@@ -20,45 +29,37 @@
   }
 
 
-  /*
-   * deep clone data from crossed window, not orthodox
-   * see #33, #45, docs/type-checking
-   */
   function clean(obj) {
-    if (obj && obj.toString) {
-      var isPlainObj
-      var fnReg = /^function[^\(]*\([^\)]*\)/
-      var fnMatched
-      var objstr = obj.toString()
+    if (!obj || !obj.toString) return obj
 
-      // plain object or array
-      /*
-       * NOTE
-       * must decide if obj is an array, because:
-       * [{...}].toString() -> [object Object]
-       */
-      if (obj.length >= 0 && obj.splice || objstr === '[object Object]') {
-        var rt = obj.length >= 0 && obj.splice ? [] : {}
-        for (var i in obj) {
-          rt[i] = clean(obj[i])
-        }
-        return rt
-      // function
-      } else if (obj.prototype && (fnMatched = objstr.match(fnReg))) {
-        return fnMatched[0] + ' {...}'
-      // DOM
-      } else if (obj.nodeName && obj.nodeType) {
-        return '<' +
-          obj.nodeName.toLowerCase() +
-          (obj.id ? ' id="' + obj.id + '"': '') +
-          (obj.className ? ' class="' + obj.className + '"' : '') +
-          ' />'
-      } else {
-        return objstr
+    var rt
+    if (isObject(obj)) {
+      rt = {}
+      for (var i in obj) {
+        rt[i] = clean(obj[i])
       }
+
+    } else if (isArray(obj)) {
+      rt = []
+      for (var i = 0; i < obj.length; i++) {
+        rt.push(clean(obj[i]))
+      }
+
+    } else if (isFunction(obj)) {
+      rt = obj.toString()
+
+    } else if (obj.nodeName && obj.nodeType) {
+      rt =  '<' +
+        obj.nodeName.toLowerCase() +
+        (obj.id ? ' id="' + obj.id + '"': '') +
+        (obj.className ? ' class="' + obj.className + '"' : '') +
+        ' />'
+
     } else {
-      return obj
+      rt = obj
     }
+
+    return rt
   }
 
 
@@ -72,14 +73,10 @@
 
       switch (action) {
         case 'onerror':
-          send('error', info)
+          result.errors.push(info)
           break
         case 'log':
           result.customLogs.push(info)
-          break
-        case 'pass':
-          break
-        case 'pending':
           break
         case 'fail':
           result.failures.push(info)
