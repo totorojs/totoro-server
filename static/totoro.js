@@ -12,7 +12,7 @@
   var laborId = location.href.match(/(?:\?|&)?__totoro_lid=([^&#]+)/)[1]
 
   var result = {
-    erros: [],
+    errors: [],
     customLogs: [],
     failures: [],
     status: undefined
@@ -82,13 +82,13 @@
           result.failures.push(info)
           break
         case 'end':
-          if (_$jscoverage) {
+          if (typeof _$jscoverage !== 'undefined') {
             var cov = map(_$jscoverage)
             ;delete cov.files
             info.coverage = cov
           }
           result.stats = info
-          send('end', info)
+          send('end', result)
           break
         default:
           break
