@@ -25,9 +25,17 @@
       laborId: laborId,
       info: info
     }
-    $.post('/__report', clean(data))
-  }
 
+    $.ajax({
+      type: 'POST',
+      url: '/__report',
+      data: JSON.stringify(clean(data)),
+      success: function() {},
+      dataType: 'json',
+      contentType: 'application/json',
+      processData: false
+    })
+  }
 
   function clean(obj) {
     if (!obj || !obj.toString) return obj
