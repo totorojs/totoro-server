@@ -67,6 +67,7 @@
 
   Driver.prototype.remove = function(data) {
     var orderKey
+    // when socket disconnect, will pass order key in to close all runners
     if (typeof data === 'string' && data in this.orders) {
       orderKey = data
     } else {
