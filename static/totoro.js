@@ -1,13 +1,4 @@
 (function() {
-  function isType(type) {
-    return function(obj) {
-      return {}.toString.call(obj) == '[object ' + type + ']'
-    }
-  }
-  var isObject = isType("Object")
-  var isFunction = isType("Function")
-  var isArray = Array.isArray || isType("Array")
-
   var orderId = location.href.match(/(?:\?|&)?__totoro_oid=([^&#]+)/)[1]
   var laborId = location.href.match(/(?:\?|&)?__totoro_lid=([^&#]+)/)[1]
 
@@ -37,39 +28,6 @@
     })
   }
 
-  function clean(obj) {
-    if (!obj || !obj.toString) return obj
-
-    var rt
-    if (isObject(obj)) {
-      rt = {}
-      for (var i in obj) {
-        rt[i] = clean(obj[i])
-      }
-
-    } else if (isArray(obj)) {
-      rt = []
-      for (var i = 0; i < obj.length; i++) {
-        rt.push(clean(obj[i]))
-      }
-
-    } else if (isFunction(obj)) {
-      rt = obj.toString()
-
-    } else if (obj.nodeName && obj.nodeType) {
-      rt =  '<' +
-        obj.nodeName.toLowerCase() +
-        (obj.id ? ' id="' + obj.id + '"': '') +
-        (obj.className ? ' class="' + obj.className + '"' : '') +
-        ' />'
-
-    } else {
-      rt = obj
-    }
-
-    return rt
-  }
-
 
   window.totoro = {
     report: function(data) {
@@ -82,6 +40,11 @@
       switch (action) {
         case 'onerror':
           result.errors.push(info)
+          // report the first error so that
+          // if test is interrupted user will see this error
+          if (result.errors.length === 1) {
+            send('onerror', result.errors)
+          }
           break
         case 'log':
           result.customLogs.push(info)
@@ -141,6 +104,51 @@
       }
     })
     return true
+  }
+
+
+  function isType(type) {
+    return function(obj) {
+      return {}.toString.call(obj) == '[object ' + type + ']'
+    }
+  }
+  var isObject = isType("Object")
+  var isFunction = isType("Function")
+  var isArray = Array.isArray || isType("Array")
+
+
+    // convert DOM and function to string
+  function clean(obj) {
+    if (!obj || !obj.toString) return obj
+
+    var rt
+    if (isObject(obj)) {
+      rt = {}
+      for (var i in obj) {
+        rt[i] = clean(obj[i])
+      }
+
+    } else if (isArray(obj)) {
+      rt = []
+      for (var i = 0; i < obj.length; i++) {
+        rt.push(clean(obj[i]))
+      }
+
+    } else if (isFunction(obj)) {
+      rt = obj.toString()
+
+    } else if (obj.nodeName && obj.nodeType) {
+      rt =  '<' +
+        obj.nodeName.toLowerCase() +
+        (obj.id ? ' id="' + obj.id + '"': '') +
+        (obj.className ? ' class="' + obj.className + '"' : '') +
+        ' />'
+
+    } else {
+      rt = obj
+    }
+
+    return rt
   }
 
 
