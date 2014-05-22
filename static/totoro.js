@@ -75,7 +75,7 @@
     },
 
     // NO USE, keep for backward compatibility
-    getOrderId: function() {return ''},
+    getOrderId: function() {return ''}
   }
 
 
