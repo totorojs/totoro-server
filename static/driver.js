@@ -40,29 +40,21 @@
   }
 
   Driver.prototype.add = function(data) {
-    var orderId = data.orderId
-    var laborId = data.laborId
-    var href = data.href.replace(/https?\:\/\/[^/]+?\//, '/')
-    var hasQuery = href.indexOf('?') !== -1
-    var src = href.replace(
-      /(#.*$)|$/,
-      (hasQuery ? '&' : '?') +'__totoro_oid=' + orderId +
-      '&' + '__totoro_lid=' + laborId +
-      '$1')
+    var url = data.url
 
     var el
     if (data.ua.group === 'mobile') {
       el = document.createElement('iframe')
-      el.src = src
+      el.src = url
       document.body.appendChild(el)
     } else {
-      el = window.open(src, 'totoro_' + (new Date()).getTime(), 'top=100,left=100,width=400,height=300')
+      el = window.open(url, 'totoro_' + (new Date()).getTime(), 'top=100,left=100,width=400,height=300')
     }
 
-    var orderKey = orderId + '-' + laborId
+    var orderKey = data.orderId + '-' + data.laborId
     this.orders[orderKey] = el
 
-    console.log('Add order <', src, '>')
+    console.log('Add order <', url, '>')
   }
 
   Driver.prototype.remove = function(data) {
