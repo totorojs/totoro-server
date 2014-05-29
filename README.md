@@ -4,7 +4,7 @@
 
 Server side of totoro.
 
-Latest stable version：v0.5.x
+Latest stable version：v1.0.1
 
 ---
 
@@ -102,7 +102,7 @@ All steps with pseudo-code.
     socket.on('add', function(data) {
       /*
        * structure of data
-       * { 
+       * {
        *   orderId: '{{orderId}}',
        *   laborId: '{{laborId}}',
        *   ua: {{specifed browser ua}},
