@@ -9,6 +9,37 @@
     status: undefined
   }
 
+  var ajax = (function() {
+    var createXHR = function() {
+      try {
+        return new window.XMLHttpRequest();
+      } catch (e) {
+        return new window.ActiveXObject('Microsoft.XMLHTTP');
+      }
+    }
+
+    return function(config) {
+      config.type = (config.type || 'GET').toUpperCase()
+
+      var xhr = createXHR();
+
+      xhr.open(config.type, config.url, true);
+
+      if (config.type === 'POST') {
+        xhr.setRequestHeader('Content-Type',
+          config.contentType || 'application/x-www-form-urlencoded');
+      }
+
+      xhr.send(config.data || null);
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          config.onSuccess && config.onSuccess(xhr.responseText)
+        }
+      }
+    }
+  })();
+
   function send(action, info) {
     var data = {
       action: action,
@@ -17,14 +48,11 @@
       info: info
     }
 
-    $.ajax({
+    ajax({
       type: 'POST',
       url: '/__report',
       data: JSON.stringify(clean(data)),
-      success: function() {},
-      dataType: 'json',
-      contentType: 'application/json',
-      processData: false
+      contentType: 'application/json'
     })
   }
 
@@ -109,28 +137,28 @@
 
   function isType(type) {
     return function(obj) {
-      return {}.toString.call(obj) == '[object ' + type + ']'
+      return {}.toString.call(obj) === '[object ' + type + ']'
     }
   }
-  var isObject = isType("Object")
-  var isFunction = isType("Function")
-  var isArray = Array.isArray || isType("Array")
+  var isObject = isType('Object')
+  var isFunction = isType('Function')
+  var isArray = Array.isArray || isType('Array')
 
 
     // convert DOM and function to string
   function clean(obj) {
     if (!obj || !obj.toString) return obj
 
-    var rt
+    var rt,i
     if (isObject(obj)) {
       rt = {}
-      for (var i in obj) {
+      for (i in obj) {
         rt[i] = clean(obj[i])
       }
 
     } else if (isArray(obj)) {
       rt = []
-      for (var i = 0; i < obj.length; i++) {
+      for (i = 0; i < obj.length; i++) {
         rt.push(clean(obj[i]))
       }
 
