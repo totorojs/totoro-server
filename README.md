@@ -59,15 +59,19 @@ Want to run some test? See the [quick start of totoro](https://github.com/totoro
 
 In a word, a driver is something open specified browser to visit specified URL and close it by directives from server.
 
-### Existing drivers
+### Available drivers
 
-- web driver
+##### Official drivers
 
-    Any browser opens {{yourIP}}:9999 becomes a web driver, it's for temporary use only.
+- [web driver](http://server.totorojs.org:9999): any browser opens {{yourIP}}:9999 becomes a web driver, it's for temporary use only.
+- [totoro-driver](https://github.com/totorojs/totoro-driver): a stable driver written in node, be able to drive chrome, safari, firefox and ie both on windows and mac.
 
-- [totoro-driver](https://github.com/totorojs/totoro-driver)
+##### Third party drivers
 
-    A stable driver written in node, be able to drive chrome, safari, firefox and ie both on windows and mac.
+- [totoro-phantomjs](https://github.com/fengmk2/totoro-phantomjs)
+- [totoro-driver-ios](https://github.com/sorrycc/totoro-driver-ios)
+
+[Add your driver here](https://github.com/totorojs/totoro-server/issues/new)
 
 ### How to write a driver?
 
@@ -84,6 +88,7 @@ All steps with pseudo-code.
 
     ```
     var socket = socketClient.connect({{server}} + '/__labor')
+    // NOTE: the namespace of socket is '/__labor'
 
     socket.on('connect', function() {
       var ua = {
