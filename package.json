@@ -23,7 +23,7 @@
     "express": "3.1.0",
     "socket.io": "0.9.14",
     "detector":"1.2.0",
-    "colorful": "2.0.2",
+    "colorful": "2.1.0",
     "tracer": "0.6.2",
     "totoro-common": "0.1.4",
     "when": "2.0.1",
