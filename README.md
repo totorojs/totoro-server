@@ -129,7 +129,7 @@ All steps with pseudo-code.
 4. Close all browsers when dirver exits.
 
 
-# 4. Cli Options
+## 4. Cli Options
 
 #### -H, --host
 
@@ -152,3 +152,7 @@ Default: false
 ## 5. Config File
 
 If you need a config file, just place `totoro-srever-config.json` in the CWD, all options are written in lower camel case.
+
+## Data flow
+
+![1](http://uml.mvnsearch.org/gist/dd566fc963f1863d82e2)
