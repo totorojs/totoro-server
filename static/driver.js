@@ -1,5 +1,5 @@
 (function() {
-  if ( typeof console === 'undefined') {
+  if (typeof console === 'undefined') {
     console = {
       log: function(msg) {
         var el = document.createElement('div')
@@ -8,7 +8,7 @@
 
         setTimeout(function() {
           document.body.removeChild(el)
-        }, 30 * 000)
+        }, 30 * 1000)
       }
     }
   }
