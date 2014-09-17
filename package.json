@@ -1,6 +1,6 @@
 {
   "name": "totoro-server",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Server side of totoro.",
   "homepage": "https://github.com/totorojs/totoro-server",
   "keywords": [
@@ -19,11 +19,13 @@
     "node": ">= 0.10.12"
   },
   "dependencies": {
-    "commander": "1.1.1",
+    "commander": "~2.3.0",
+    "utilx": "~0.0.7",
+    "colorful": "~2.1.0",
+
     "express": "3.1.0",
     "socket.io": "0.9.14",
     "detector":"1.2.0",
-    "colorful": "2.1.0",
     "tracer": "0.6.2",
     "totoro-common": "0.1.4",
     "when": "2.0.1",

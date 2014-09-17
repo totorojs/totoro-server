@@ -1,18 +1,16 @@
 #!/usr/bin/env node
 
-var fs = require('fs')
 var commander = require('commander')
-var path = require('path')
 var colorful = require('colorful')
+var utilx = require('utilx')
 
-var common = require('totoro-common')
 var Server = require('../lib/')
 var pkg = require('../package')
 
 
 commander
   .description(pkg.description)
-  .option('-v, --version', 'output the version number')
+  .option('-v, --version', 'output version')
   .option('-d, --debug', 'show debug log')
   .option('-H, --host [s]', 'specify server host')
   .option('-P, --port [n]', 'specify server port')
@@ -21,33 +19,8 @@ commander
     console.log('  ' + colorful.cyan(pkg.version))
     console.log()
     process.exit(0)
-  }).helpInformation = helpInfo
+  }).helpInformation = utilx.cGetHelp(pkg)
 
 commander.parse(process.argv)
 
-new Server(common.getCfg(commander))
-
-function helpInfo() {
-  var commandHelp = ''
-  if (this.commands.length) {
-    commandHelp = '\n' +
-      colorful.green('  Commands:') +
-      '    ' + this.commandHelp().replace(/\n  Commands:\n/gm, '')
-  }
-  
-  return [
-    '',
-    colorful.cyan('  ' + this.description()),
-    '',
-    colorful.green('  Usage:'),
-    '    ' + this._name + ' ' + this.usage(),
-    commandHelp,
-    colorful.green('  Options:'),
-    '' + this.optionHelp().replace(/^/gm, '    '),
-    '',
-    colorful.green('  More Info:'),
-    '    ' + colorful.underline(pkg.homepage),
-    '',
-    ''
-  ].join('\n')
-}
+new Server(utilx.cGetCfg(commander))
