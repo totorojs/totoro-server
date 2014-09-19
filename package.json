@@ -20,9 +20,10 @@
   },
   "dependencies": {
     "commander": "~2.3.0",
-    "utilx": "~0.0.7",
+    "utilx": "~0.0.8",
     "colorful": "~2.1.0",
     "express": "~4.9.0",
+    "body-parser": "~1.8.2",
     "socket.io": "~1.1.0",
 
     "detector":"1.2.0",
