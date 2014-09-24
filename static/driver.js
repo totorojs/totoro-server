@@ -1,9 +1,9 @@
 (function() {
   if (typeof console === 'undefined') {
     console = {
-      log: function(msg) {
+      log: function() {
         var el = document.createElement('div')
-        el.innerHTML = msg
+        el.innerHTML = [].slice.call(arguments, 0).join(' ')
         document.body.appendChild(el)
 
         setTimeout(function() {
@@ -40,21 +40,21 @@
   }
 
   Driver.prototype.add = function(data) {
-    var url = data.url
+    var runner = data.runner
 
     var el
-    if (data.ua.group === 'mobile') {
+    if (data.laborTrait.group === 'mobile') {
       el = document.createElement('iframe')
-      el.src = url
+      el.src = runner
       document.body.appendChild(el)
     } else {
-      el = window.open(url, 'totoro_' + (new Date()).getTime(), 'top=100,left=100,width=400,height=300')
+      el = window.open(runner, 'totoro_' + (new Date()).getTime(), 'top=100,left=100,width=400,height=300')
     }
 
     var orderKey = data.orderId + '-' + data.laborId
     this.orders[orderKey] = el
 
-    console.log('Add order <', url, '>')
+    console.log('Add order <', runner, '>')
   }
 
   Driver.prototype.remove = function(data) {
@@ -83,6 +83,4 @@
 
 
   var driver = new Driver()
-
-
 })()
