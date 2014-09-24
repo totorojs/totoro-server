@@ -59,9 +59,6 @@
 
   window.totoro = {
     report: function(data) {
-      // backward compatible
-      delete data.orderId
-
       var action = data.action
       var info = data.info
 
@@ -71,7 +68,7 @@
           // report the first error so that
           // if test is interrupted user will see this error
           if (result.errors.length === 1) {
-            send('onerror', result.errors)
+            send('onerror', {errors: result.errors})
           }
           break
         case 'log':
@@ -100,10 +97,7 @@
         action: 'end',
         info: {}
       })
-    },
-
-    // NO USE, keep for backward compatibility
-    getOrderId: function() {return ''}
+    }
   }
 
 
@@ -191,7 +185,7 @@
    * @return {Object}
    * @api private
    */
-  function map(cov, verbose) {
+  function map(cov) {
     var ret = {
       sloc: 0,
       hits: 0,
@@ -222,7 +216,7 @@
     if (ret.sloc > 0) {
       ret.coverage = (ret.hits / ret.sloc) * 100
 
-      ret['missesDetail'] = missesDetail
+      // ret['missesDetail'] = missesDetail
     }
 
     return ret
