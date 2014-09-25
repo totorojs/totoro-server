@@ -4,7 +4,7 @@
 
 Server side of totoro.
 
-Latest stable version：v1.0.1
+Latest stable version：v2.0
 
 ---
 
@@ -70,34 +70,34 @@ In a word, a driver is something open specified browser to visit specified URL a
 
 - [totoro-phantomjs](https://github.com/fengmk2/totoro-phantomjs)
 - [totoro-driver-ios](https://github.com/sorrycc/totoro-driver-ios)
+- [totoro-driver-android](https://github.com/semious/totoro-android)
 
 [Add your driver here](https://github.com/totorojs/totoro-server/issues/new)
 
 ### How to write a driver?
 
-If you know how to open and close a browser, it's very very easy to write a driver for it.
+If you know how to open and close a browser(or some other application), it's very very easy to write a driver for it.
 
 All steps with pseudo-code.
 
 1. Set command line options
 
     - `-s, --server`: default is `server.totorojs.org:9999`
-    - `-b, --browsers`: specifies browser names you want to drive, split by comma
 
-2. Use socket to link to server and init.
+2. Link to server by socket and init.
 
     ```
     var socket = socketClient.connect({{server}} + '/__labor')
     // NOTE: the namespace of socket is '/__labor'
 
     socket.on('connect', function() {
-      var ua = {
+      var initInfo = {
         device: { name: 'mac' },
         os: { name: 'macosx', version: '13.1.0' },
-        browser: { name: 'chrome', version:'35.0.1916.114' }
+        agent: { name: 'chrome', version:'35.0.1916.114' }
       }
 
-      socket.emit('init', ua)
+      socket.emit('init', initInfo)
     })
     ```
 
@@ -108,18 +108,18 @@ All steps with pseudo-code.
       /*
        * structure of data
        * {
-       *   orderId: '{{orderId}}',
-       *   laborId: '{{laborId}}',
-       *   ua: {{specifed browser ua}},
-       *   url: {{test runner url}}
+       *   orderId: {{orderId}},
+       *   laborId: {{laborId}},
+       *   laborTrait: {{labor trait info, the same as init info}},
+       *   runner: {{test runner, typically be a url}}
        * }
        */
       var key = data.orderId + '-' + data.laborId
-      orders[key] = open(url)
+      orders[key] = open(runner)
     })
 
     socket.on('remove', function(data) {
-      // the structure is the same as 'add' event's but without the ua
+      // the data structure is the same as 'add' event's but without the laborTrait
       var key = data.orderId + '-' + data.laborId
       close(orders[key])
       ;delete orders[key]
