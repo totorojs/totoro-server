@@ -82,7 +82,7 @@ All steps with pseudo-code.
 
 1. Set command line options
 
-    - `-s, --server`: default is `server.totorojs.org:9999`
+    - `-s, --server`: default is `http://server.totorojs.org:9999`
 
 2. Link to server by socket and init.
 
@@ -92,6 +92,9 @@ All steps with pseudo-code.
 
     socket.on('connect', function() {
       var initInfo = {
+        // if the app you drive is not a browser
+        // group is required, it could be any string you like
+        group: 'groupName',
         device: { name: 'mac' },
         os: { name: 'macosx', version: '13.1.0' },
         agent: { name: 'chrome', version:'35.0.1916.114' }
